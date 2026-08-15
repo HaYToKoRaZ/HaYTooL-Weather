@@ -3,8 +3,6 @@
 <div align="center">
   <p><strong>Lightweight, Dynamic Weather Application for Windows System Tray</strong></p>
   <p><em>Windows Sistem Tepsisi (Görev Çubuğu) Dinamik Hava Durumu Uygulaması</em></p>
-  <p>👨‍💻 <strong>Developer / Geliştirici:</strong> HaYTo</p>
-  <p>🌐 <strong>GitHub:</strong> <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather">HaYToKoRaZ/HaYTooL-Weather</a></p>
 </div>
 
 ---
@@ -19,7 +17,7 @@
 - **Live Taskbar Preview Simulator:** Real-time taskbar preview inside the Control Center showing how icons look on your actual taskbar.
 - **Default Location & Interval:** Starts with **Istanbul, Turkey** by default with a **6-hour** automatic update interval.
 - **Instant Location Search & Quick Capitals:** Search provinces, districts, and worldwide cities or select capital cities representing 7 languages with 1 click.
-- **Detailed Weather Card:** Click tray icon to open a sleek dark glass popup with humidity, wind speed, precipitation probability, and a 7-day forecast.
+- **Detailed Weather Card:** Click tray icon to open a sleek dark glass popup with humidity, wind speed, precipitation probability, and a 7-day forecast with direct web links.
 - **Portable `.ini` Configuration:** All settings are stored in `HaYTooLWeather.ini` located in the executable folder.
 - **7 Languages Supported:** English (`en`), Turkish (`tr`), Spanish (`es`), German (`de`), Portuguese (`pt`), Arabic (`ar`), Russian (`ru`).
 - **Zero Telemetry:** 100% private, zero tracking, zero telemetry.
@@ -45,7 +43,7 @@ dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile
 - **Canlı Görev Çubuğu Simülasyonu:** Ayarlar panelinde saatin yanında simgelerin nasıl duracağını canlı olarak önizleyebilirsiniz.
 - **Varsayılan Ayarlar:** İlk açılışta otomatik olarak **İstanbul, Türkiye** konumuyla gelir ve her **6 saatte bir** güncellenir.
 - **Kolay Konum Değiştirme:** Kontrol Merkezi üzerinden Türkiye'nin 81 ili, tüm ilçeleri ve dünya şehirleri anında aranıp seçilebilir; 7 dilin başkentleri 1 tıkla anında seçilebilir.
-- **Detaylı Hava Kartı:** Tıklandığında açılan modern kart ile nem, rüzgar, yağış ihtimali ve 7 günlük tahminleri görüntüler.
+- **Detaylı Hava Kartı:** Tıklandığında açılan modern kart ile nem, rüzgar, yağış ihtimali, 7 günlük tahminler ve web bağlantısını görüntüler.
 - **Taşınabilir (Portable) `.ini` Yapılandırması:** Tüm ayarlar exe ile aynı dizindeki `HaYTooLWeather.ini` dosyasında saklanır.
 - **7 Dil Desteği:** Türkçe (`tr`), English (`en`), Español (`es`), Deutsch (`de`), Português (`pt`), العربية (`ar`), Русский (`ru`).
 - **Sıfır Telemetri:** Hiçbir veri toplanmaz, %100 gizlilik odaklıdır.

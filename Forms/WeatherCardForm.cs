@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using HaYTooLWeather.Models;
@@ -23,7 +24,7 @@ public class WeatherCardForm : Form
         FormBorderStyle = FormBorderStyle.None;
         StartPosition = FormStartPosition.Manual;
         ShowInTaskbar = false;
-        Size = new Size(380, 520);
+        Size = new Size(390, 500);
         BackColor = Color.FromArgb(24, 27, 34);
         ForeColor = Color.White;
         DoubleBuffered = true;
@@ -40,7 +41,6 @@ public class WeatherCardForm : Form
     private void PositionNearTaskbar()
     {
         var screen = Screen.PrimaryScreen?.WorkingArea ?? Screen.GetWorkingArea(this);
-        // Görev çubuğunun genellikle sağ altta olduğunu varsayarak sağ alt köşeye yerleştir
         int x = screen.Right - Width - 12;
         int y = screen.Bottom - Height - 12;
         Location = new Point(x, y);
@@ -48,7 +48,7 @@ public class WeatherCardForm : Form
 
     private void InitializeCardUI()
     {
-        // 1. Üst Başlık Paneli (Konum + Yenile + Kapat)
+        // 1. Üst Başlık Paneli (Konum + Web Linki + Yenile + Kapat)
         var pnlHeader = new Panel
         {
             Dock = DockStyle.Top,
@@ -60,10 +60,10 @@ public class WeatherCardForm : Form
         var lblLocation = new Label
         {
             Text = $"📍 {_weather.LocationName}",
-            Font = new Font("Segoe UI", 12.5f, FontStyle.Bold),
+            Font = new Font("Segoe UI", 12f, FontStyle.Bold),
             ForeColor = Color.White,
             AutoSize = false,
-            Size = new Size(240, 24),
+            Size = new Size(210, 24),
             Location = new Point(16, 14)
         };
 
@@ -73,43 +73,73 @@ public class WeatherCardForm : Form
             Font = new Font("Segoe UI", 8.5f, FontStyle.Regular),
             ForeColor = Color.FromArgb(150, 160, 175),
             AutoSize = false,
-            Size = new Size(240, 18),
+            Size = new Size(210, 18),
             Location = new Point(18, 38)
         };
 
+        // 🌐 Web'de Detaylı Gör Butonu
+        var btnWeb = new Button
+        {
+            Text = "🌐",
+            Size = new Size(32, 32),
+            Location = new Point(260, 14),
+            FlatStyle = FlatStyle.Flat,
+            BackColor = Color.FromArgb(35, 42, 56),
+            ForeColor = Color.FromArgb(0, 200, 255),
+            Cursor = Cursors.Hand,
+            Font = new Font("Segoe UI", 10f)
+        };
+        btnWeb.FlatAppearance.BorderSize = 0;
+        var tt = new ToolTip();
+        tt.SetToolTip(btnWeb, "Web'de / Tarayıcıda Detaylı İncele (Google Weather)");
+        btnWeb.Click += (s, e) =>
+        {
+            try
+            {
+                string searchUrl = $"https://www.google.com/search?q=weather+{Uri.EscapeDataString(_weather.LocationName)}";
+                Process.Start(new ProcessStartInfo { FileName = searchUrl, UseShellExecute = true });
+            }
+            catch { }
+        };
+
+        // 🔄 Yenile Butonu
         var btnRefresh = new Button
         {
             Text = "🔄",
             Size = new Size(32, 32),
-            Location = new Point(290, 14),
+            Location = new Point(300, 14),
             FlatStyle = FlatStyle.Flat,
             BackColor = Color.FromArgb(40, 45, 56),
             ForeColor = Color.White,
-            Cursor = Cursors.Hand
+            Cursor = Cursors.Hand,
+            Font = new Font("Segoe UI", 10f)
         };
         btnRefresh.FlatAppearance.BorderSize = 0;
+        tt.SetToolTip(btnRefresh, LocalizationService.Get("menu_refresh_now"));
         btnRefresh.Click += (s, e) => { _onRefreshRequested(); Close(); };
 
+        // ✕ Kapat Butonu
         var btnClose = new Button
         {
             Text = "✕",
             Size = new Size(32, 32),
-            Location = new Point(330, 14),
+            Location = new Point(340, 14),
             FlatStyle = FlatStyle.Flat,
             BackColor = Color.FromArgb(40, 45, 56),
             ForeColor = Color.FromArgb(180, 190, 205),
-            Cursor = Cursors.Hand
+            Cursor = Cursors.Hand,
+            Font = new Font("Segoe UI", 9f, FontStyle.Bold)
         };
         btnClose.FlatAppearance.BorderSize = 0;
         btnClose.Click += (s, e) => Close();
 
-        pnlHeader.Controls.AddRange(new Control[] { lblLocation, lblLastUpdated, btnRefresh, btnClose });
+        pnlHeader.Controls.AddRange(new Control[] { lblLocation, lblLastUpdated, btnWeb, btnRefresh, btnClose });
 
         // 2. Ana Hava Durumu Paneli (Büyük Sıcaklık, Açıklama, Hissedilen)
         var pnlHero = new Panel
         {
             Dock = DockStyle.Top,
-            Height = 115,
+            Height = 110,
             Padding = new Padding(18, 0, 18, 0),
             BackColor = Color.Transparent
         };
@@ -129,8 +159,8 @@ public class WeatherCardForm : Form
         var lblCondition = new Label
         {
             Text = conditionText,
-            Font = new Font("Segoe UI", 12f, FontStyle.Bold),
-            ForeColor = Color.FromArgb(0, 170, 255),
+            Font = new Font("Segoe UI", 11.5f, FontStyle.Bold),
+            ForeColor = Color.FromArgb(0, 180, 255),
             AutoSize = true,
             Location = new Point(175, 14)
         };
@@ -146,7 +176,7 @@ public class WeatherCardForm : Form
 
         pnlHero.Controls.AddRange(new Control[] { lblTemp, lblCondition, lblFeelsLike });
 
-        // 3. Metrik Rozetleri (Nem, Rüzgar, Yağış)
+        // 3. Metrik Rozetleri (Nem, Rüzgar, Yağış İhtimali)
         var pnlMetrics = new FlowLayoutPanel
         {
             Dock = DockStyle.Top,
@@ -163,66 +193,75 @@ public class WeatherCardForm : Form
 
         pnlMetrics.Controls.AddRange(new Control[] { metric1, metric2, metric3 });
 
-        // 4. 7 Günlük Tahmin Listesi (Kaydırılabilir)
-        var pnlForecastTitle = new Label
+        // 4. 7 Günlük Tahmin Başlık Çubuğu (Yağış ve Sıcaklık Sütun Açıklamalı)
+        var pnlForecastHeader = new Panel
         {
             Dock = DockStyle.Top,
-            Height = 26,
-            Text = $"📅 {LocalizationService.Get("daily_7")}",
-            Font = new Font("Segoe UI", 10f, FontStyle.Bold),
-            ForeColor = Color.FromArgb(200, 210, 225),
-            Padding = new Padding(18, 4, 0, 0)
+            Height = 28,
+            Padding = new Padding(16, 4, 16, 0),
+            BackColor = Color.FromArgb(20, 23, 30)
         };
 
+        var lblTitleLeft = new Label
+        {
+            Text = $"📅 {LocalizationService.Get("daily_7")}",
+            Font = new Font("Segoe UI", 9f, FontStyle.Bold),
+            ForeColor = Color.FromArgb(200, 215, 235),
+            Location = new Point(16, 4),
+            AutoSize = true
+        };
+
+        var lblLegendRain = new Label
+        {
+            Text = "💧 Yağış",
+            Font = new Font("Segoe UI", 8f, FontStyle.Bold),
+            ForeColor = Color.FromArgb(80, 190, 255),
+            Location = new Point(220, 5),
+            AutoSize = true
+        };
+
+        var lblLegendTemp = new Label
+        {
+            Text = "🌡️ Sıcaklık",
+            Font = new Font("Segoe UI", 8f, FontStyle.Bold),
+            ForeColor = Color.FromArgb(220, 230, 245),
+            Location = new Point(290, 5),
+            AutoSize = true
+        };
+
+        pnlForecastHeader.Controls.AddRange(new Control[] { lblTitleLeft, lblLegendRain, lblLegendTemp });
+
+        // 5. 7 Günlük Tahmin Listesi
         var pnlDaily = new Panel
         {
             Dock = DockStyle.Fill,
-            Padding = new Padding(16, 0, 16, 8),
+            Padding = new Padding(16, 4, 16, 12),
             AutoScroll = true
         };
 
-        int itemY = 0;
+        int itemY = 4;
         foreach (var daily in _weather.DailyForecasts)
         {
             var dayRow = CreateDailyForecastRow(daily, unitSymbol);
             dayRow.Location = new Point(0, itemY);
             pnlDaily.Controls.Add(dayRow);
-            itemY += 32;
+            itemY += 34;
         }
 
-        // 5. Alt Bilgi (Footer - HaYTo İmzası)
-        var pnlFooter = new Panel
-        {
-            Dock = DockStyle.Bottom,
-            Height = 32,
-            BackColor = Color.FromArgb(18, 20, 26)
-        };
-
-        var lblFooter = new Label
-        {
-            Text = "HaYTooL Weather • Geliştirici: HaYTo",
-            Font = new Font("Segoe UI", 8.5f, FontStyle.Regular),
-            ForeColor = Color.FromArgb(130, 140, 155),
-            Dock = DockStyle.Fill,
-            TextAlign = ContentAlignment.MiddleCenter
-        };
-        pnlFooter.Controls.Add(lblFooter);
-
-        // Panelleri Ekle
+        // Panelleri Forma Ekle (Footer kaldırıldı!)
         Controls.Add(pnlDaily);
-        Controls.Add(pnlForecastTitle);
+        Controls.Add(pnlForecastHeader);
         Controls.Add(pnlMetrics);
         Controls.Add(pnlHero);
         Controls.Add(pnlHeader);
-        Controls.Add(pnlFooter);
     }
 
     private Panel CreateMetricBadge(string title, string value)
     {
         var pnl = new Panel
         {
-            Size = new Size(110, 56),
-            Margin = new Padding(3),
+            Size = new Size(114, 56),
+            Margin = new Padding(2),
             BackColor = Color.FromArgb(35, 39, 48)
         };
 
@@ -254,7 +293,7 @@ public class WeatherCardForm : Form
     {
         var row = new Panel
         {
-            Size = new Size(330, 30),
+            Size = new Size(345, 30),
             BackColor = Color.Transparent
         };
 
@@ -265,8 +304,8 @@ public class WeatherCardForm : Form
         {
             Text = dayName,
             Font = new Font("Segoe UI", 9.5f, isToday ? FontStyle.Bold : FontStyle.Regular),
-            ForeColor = isToday ? Color.FromArgb(0, 180, 255) : Color.White,
-            Size = new Size(70, 28),
+            ForeColor = isToday ? Color.FromArgb(0, 190, 255) : Color.White,
+            Size = new Size(68, 26),
             Location = new Point(4, 3),
             TextAlign = ContentAlignment.MiddleLeft
         };
@@ -277,28 +316,31 @@ public class WeatherCardForm : Form
             Text = desc,
             Font = new Font("Segoe UI", 8.5f, FontStyle.Regular),
             ForeColor = Color.FromArgb(160, 175, 195),
-            Size = new Size(130, 28),
-            Location = new Point(80, 3),
+            Size = new Size(130, 26),
+            Location = new Point(76, 3),
             TextAlign = ContentAlignment.MiddleLeft
         };
 
+        // Yağış İhtimali (% ile)
+        var rainText = daily.RainChance > 0 ? $"💧 %{daily.RainChance}" : "-";
         var lblRain = new Label
         {
-            Text = daily.RainChance > 0 ? $"%{daily.RainChance}" : "",
-            Font = new Font("Segoe UI", 8.5f, FontStyle.Regular),
-            ForeColor = Color.FromArgb(100, 200, 255),
-            Size = new Size(40, 28),
-            Location = new Point(215, 3),
+            Text = rainText,
+            Font = new Font("Segoe UI", 8.5f, FontStyle.Bold),
+            ForeColor = daily.RainChance > 0 ? Color.FromArgb(80, 200, 255) : Color.FromArgb(100, 110, 130),
+            Size = new Size(55, 26),
+            Location = new Point(208, 3),
             TextAlign = ContentAlignment.MiddleRight
         };
 
+        // En Yüksek / En Düşük Sıcaklık
         var lblTemps = new Label
         {
             Text = $"{daily.MaxTemp:0}° / {daily.MinTemp:0}°",
             Font = new Font("Segoe UI", 9f, FontStyle.Bold),
             ForeColor = Color.White,
-            Size = new Size(70, 28),
-            Location = new Point(260, 3),
+            Size = new Size(72, 26),
+            Location = new Point(268, 3),
             TextAlign = ContentAlignment.MiddleRight
         };
 
@@ -309,7 +351,7 @@ public class WeatherCardForm : Form
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
-        // İnce ve estetik kenarlık
+        // İnce ve estetik modern kenarlık
         using var pen = new Pen(Color.FromArgb(60, 70, 85), 1.5f);
         e.Graphics.DrawRectangle(pen, 0, 0, Width - 1, Height - 1);
     }
