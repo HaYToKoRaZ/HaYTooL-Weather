@@ -1,11 +1,37 @@
 # 🌤️ HaYTooL Weather
 
 <div align="center">
-  <p><strong>Windows Sistem Tepsisi (Görev Çubuğu) Dinamik Hava Durumu Uygulaması</strong></p>
-  <p><em>Lightweight, Dynamic Weather Application for Windows System Tray</em></p>
-  <p>👨‍💻 <strong>Geliştirici / Developer:</strong> HaYTo</p>
-  <p>🌐 <strong>GitHub Repository:</strong> <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather">HaYToKoRaZ/HaYTooL-Weather</a></p>
+  <p><strong>Lightweight, Dynamic Weather Application for Windows System Tray</strong></p>
+  <p><em>Windows Sistem Tepsisi (Görev Çubuğu) Dinamik Hava Durumu Uygulaması</em></p>
+  <p>👨‍💻 <strong>Developer / Geliştirici:</strong> HaYTo</p>
+  <p>🌐 <strong>GitHub:</strong> <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather">HaYToKoRaZ/HaYTooL-Weather</a></p>
 </div>
+
+---
+
+## 🇬🇧 English Description
+
+**HaYTooL Weather** is an ultra-lightweight, modern native desktop application that runs silently in the Windows Notification Area (System Tray, next to the taskbar clock), dynamically rendering live temperature and weather condition symbols.
+
+### ✨ Key Features
+- **Dynamic Dual Tray Icons:** High-DPI rendered weather condition icon on the left (sun, rain, snow, storm, etc.) and large temperature digits on the right (e.g., `24°`).
+- **Fully Customizable Appearance & Scale:** Independent sliders (%40 - %200) for weather icon scale, temperature text size, custom background colors, and opacity levels (%0 - %100).
+- **Live Taskbar Preview Simulator:** Real-time taskbar preview inside the Control Center showing how icons look on your actual taskbar.
+- **Default Location & Interval:** Starts with **Istanbul, Turkey** by default with a **6-hour** automatic update interval.
+- **Instant Location Search & Quick Capitals:** Search provinces, districts, and worldwide cities or select capital cities representing 7 languages with 1 click.
+- **Detailed Weather Card:** Click tray icon to open a sleek dark glass popup with humidity, wind speed, precipitation probability, and a 7-day forecast.
+- **Portable `.ini` Configuration:** All settings are stored in `HaYTooLWeather.ini` located in the executable folder.
+- **7 Languages Supported:** English (`en`), Turkish (`tr`), Spanish (`es`), German (`de`), Portuguese (`pt`), Arabic (`ar`), Russian (`ru`).
+- **Zero Telemetry:** 100% private, zero tracking, zero telemetry.
+
+### 🚀 Build & Run Locally
+```bash
+# Build the project
+dotnet build
+
+# Publish single-file standalone executable
+dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o ./dist
+```
 
 ---
 
@@ -24,37 +50,11 @@
 - **7 Dil Desteği:** Türkçe (`tr`), English (`en`), Español (`es`), Deutsch (`de`), Português (`pt`), العربية (`ar`), Русский (`ru`).
 - **Sıfır Telemetri:** Hiçbir veri toplanmaz, %100 gizlilik odaklıdır.
 
-### 🚀 Çalıştırma & Derleme
-```bash
-# Projeyi derleme
-dotnet build
-
-# Bağımsız tekil exe üretme
-dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o ./dist
-```
-
 ---
 
-## 🇬🇧 English Description
-
-**HaYTooL Weather** is an ultra-lightweight, modern weather application that runs in the Windows Notification Area (System Tray, next to the clock) displaying live temperature and weather condition icons dynamically.
-
-### ✨ Key Features
-- **Dynamic Dual Tray Icons:** High-DPI rendered weather condition icon on the left and large temperature digits on the right.
-- **Customizable Appearance & Size:** Individual slider controls for symbol size, font size, custom background colors, and opacity levels (%40 - %200).
-- **Live Taskbar Preview Simulator:** Real-time preview inside the Control Center showing how icons look on your actual taskbar.
-- **Default Location & Frequency:** Starts with **Istanbul, Turkey** by default with a **6-hour** automatic update interval.
-- **Instant Location Search:** Search and switch between provinces, districts, and global cities via the integrated search engine and capital city chips.
-- **Detailed Weather Card:** Click to view a sleek popup with humidity, wind speed, precipitation chance, and 7-day forecast.
-- **Portable `.ini` Configuration:** Settings stored in `HaYTooLWeather.ini` in the executable folder.
-- **7 Languages Supported:** TR, EN, ES, DE, PT, AR, RU.
-- **Zero Telemetry:** 100% private, no tracking.
-
----
-
-## 📬 İletişim / Contact
-- **Geliştirici / Developer:** HaYTo
-- **E-posta / Email:** [korazhayto@gmail.com](mailto:korazhayto@gmail.com)
+## 📬 Contact & Support / İletişim & Destek
+- **Developer / Geliştirici:** HaYTo
+- **Email / E-posta:** [korazhayto@gmail.com](mailto:korazhayto@gmail.com)
 - **X (Twitter):** [https://x.com/HaYTo](https://x.com/HaYTo)
 - **GitHub:** [https://github.com/HaYToKoRaZ/HaYTooL-Weather](https://github.com/HaYToKoRaZ/HaYTooL-Weather)
-- **Lisans / License:** MIT License
+- **License / Lisans:** MIT License
