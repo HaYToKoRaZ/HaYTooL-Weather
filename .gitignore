@@ -1,0 +1,25 @@
+# Yerel ve Gizli Klasörler (Local & Private)
+0nogithub/
+
+# Derleme ve Çıktı Dizinleri (Build & Dist)
+bin/
+obj/
+dist/
+build/
+out/
+Temp/
+
+# Bağımlılıklar (Dependencies)
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+env/
+
+# IDE & Sistem (IDE & OS)
+.vs/
+.vscode/
+*.user
+*.suo
+Thumbs.db
+Desktop.ini
