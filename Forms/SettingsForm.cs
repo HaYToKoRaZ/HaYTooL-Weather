@@ -58,10 +58,11 @@ public class SettingsForm : Form
     private PictureBox? _pbLivePreview;
 
     // 3. Genel Sekmesi Kontrolleri
+    private ComboBox? _cmbProvider;
     private ComboBox? _cmbInterval;
     private ComboBox? _cmbTempUnit;
     private ComboBox? _cmbWindUnit;
-    private CheckBox? _chkAutoStart;
+    private CheckBox? _chkAutoCheckUpdates;
 
     public SettingsForm(WeatherService weatherService, AppSettings settings, Action<AppSettings> onSettingsSaved, string initialTab = "location")
     {
@@ -662,6 +663,28 @@ public class SettingsForm : Form
         var lblHeader = new Label { Text = LocalizationService.Get("gen_title"), Location = new Point(0, y), Size = new Size(580, 26), Font = new Font("Segoe UI", 12.5f, FontStyle.Bold), ForeColor = Color.FromArgb(0, 190, 255) };
         y += 34;
 
+        // Hava Durumu Veri Kaynağı / Model Seçimi
+        var lblProvider = new Label { Text = LocalizationService.Get("gen_weather_provider"), Location = new Point(0, y), Size = new Size(580, 20), Font = new Font("Segoe UI", 9f, FontStyle.Bold), ForeColor = Color.FromArgb(200, 215, 240) };
+        y += 22;
+        _cmbProvider = new ComboBox { Location = new Point(0, y), Size = new Size(580, 28), DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.FromArgb(32, 38, 52), ForeColor = Color.White, FlatStyle = FlatStyle.Flat };
+        _cmbProvider.Items.Add(new ProviderItem(LocalizationService.Get("provider_auto"), "auto"));
+        _cmbProvider.Items.Add(new ProviderItem(LocalizationService.Get("provider_mgm"), "mgm"));
+        _cmbProvider.Items.Add(new ProviderItem(LocalizationService.Get("provider_ecmwf"), "ecmwf"));
+        _cmbProvider.Items.Add(new ProviderItem(LocalizationService.Get("provider_gfs"), "gfs"));
+        _cmbProvider.Items.Add(new ProviderItem(LocalizationService.Get("provider_dwd"), "dwd"));
+        SelectProviderItem(_settings.WeatherProvider);
+        _cmbProvider.SelectedIndexChanged += async (s, e) =>
+        {
+            if (_cmbProvider.SelectedItem is ProviderItem pItem)
+            {
+                _settings.WeatherProvider = pItem.Code;
+                ApplyLiveChanges();
+                await _weatherService.GetWeatherAsync(_settings);
+                UpdateLivePreview();
+            }
+        };
+        y += 46;
+
         var lblInterval = new Label { Text = LocalizationService.Get("gen_update_interval"), Location = new Point(0, y), Size = new Size(580, 20), Font = new Font("Segoe UI", 9f, FontStyle.Bold), ForeColor = Color.FromArgb(200, 215, 240) };
         y += 22;
         _cmbInterval = new ComboBox { Location = new Point(0, y), Size = new Size(580, 28), DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.FromArgb(32, 38, 52), ForeColor = Color.White, FlatStyle = FlatStyle.Flat };
@@ -692,21 +715,9 @@ public class SettingsForm : Form
         _cmbWindUnit.Items.Add("Metre / Saniye (m/s)");
         _cmbWindUnit.SelectedIndex = _settings.WindSpeedUnit.Equals("mph", StringComparison.OrdinalIgnoreCase) ? 1 : (_settings.WindSpeedUnit.Equals("ms", StringComparison.OrdinalIgnoreCase) ? 2 : 0);
         _cmbWindUnit.SelectedIndexChanged += (s, e) => ApplyLiveChanges();
-        y += 50;
-
-        _chkAutoStart = new CheckBox
-        {
-            Text = LocalizationService.Get("gen_autostart"),
-            Location = new Point(0, y),
-            Size = new Size(580, 26),
-            Checked = _settings.StartWithWindows,
-            Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
-            ForeColor = Color.FromArgb(0, 220, 160)
-        };
-        _chkAutoStart.CheckedChanged += (s, e) => ApplyLiveChanges();
 
         _pnlGeneralTab.Controls.AddRange(new Control[] {
-            lblHeader, lblInterval, _cmbInterval, lblTempUnit, _cmbTempUnit, lblWindUnit, _cmbWindUnit, _chkAutoStart
+            lblHeader, lblProvider, _cmbProvider, lblInterval, _cmbInterval, lblTempUnit, _cmbTempUnit, lblWindUnit, _cmbWindUnit
         });
     }
 
@@ -816,12 +827,100 @@ public class SettingsForm : Form
         };
         lnkX.LinkClicked += (s, e) => OpenUrl("https://x.com/HaYTo");
 
-        // 3. GitHub Bilgisi
-        var lblGit = new Label { Text = "GitHub: [Belirtilecek / Yakında]", Location = new Point(22, 162), Size = new Size(400, 20), Font = new Font("Segoe UI", 9.5f), ForeColor = Color.FromArgb(160, 175, 195) };
+        // 3. Tıklanabilir GitHub Linki
+        var lblGitPrefix = new Label { Text = "GitHub:", Location = new Point(22, 162), Size = new Size(80, 22), Font = new Font("Segoe UI", 9.5f), ForeColor = Color.FromArgb(200, 215, 235) };
+        var lnkGit = new LinkLabel
+        {
+            Text = "https://github.com/HaYToKoRaZ/HaYTooL-Weather",
+            Location = new Point(104, 162),
+            AutoSize = true,
+            Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
+            LinkColor = Color.FromArgb(0, 190, 255),
+            ActiveLinkColor = Color.FromArgb(100, 220, 255),
+            VisitedLinkColor = Color.FromArgb(0, 190, 255),
+            Cursor = Cursors.Hand
+        };
+        lnkGit.LinkClicked += (s, e) => OpenUrl("https://github.com/HaYToKoRaZ/HaYTooL-Weather");
 
-        var lblCopy = new Label { Text = LocalizationService.Get("about_copy"), Location = new Point(22, 204), Size = new Size(500, 20), Font = new Font("Segoe UI", 8.5f, FontStyle.Italic), ForeColor = Color.FromArgb(110, 125, 145) };
+        // 4. Güncelleme Kontrol Bölümü (Yan Yana: Buton + Başlangıçta Denetle Onay Kutusu)
+        var btnCheckUpdate = new Button
+        {
+            Text = LocalizationService.Get("about_check_updates"),
+            Location = new Point(22, 198),
+            Size = new Size(185, 32),
+            BackColor = Color.FromArgb(38, 45, 60),
+            ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat,
+            Cursor = Cursors.Hand,
+            Font = new Font("Segoe UI", 9f, FontStyle.Bold)
+        };
+        btnCheckUpdate.FlatAppearance.BorderSize = 0;
 
-        pnlAboutCard.Controls.AddRange(new Control[] { lblTitle, lblVer, lblDev, lblEmailPrefix, lnkEmail, lblXPrefix, lnkX, lblGit, lblCopy });
+        _chkAutoCheckUpdates = new CheckBox
+        {
+            Text = LocalizationService.Get("gen_auto_check_updates"),
+            Location = new Point(218, 201),
+            Size = new Size(355, 26),
+            Checked = _settings.AutoCheckUpdates,
+            Font = new Font("Segoe UI", 9f, FontStyle.Bold),
+            ForeColor = Color.FromArgb(0, 220, 160)
+        };
+        _chkAutoCheckUpdates.CheckedChanged += (s, e) => ApplyLiveChanges();
+
+        var lblUpdateStatus = new Label
+        {
+            Text = "",
+            Location = new Point(22, 238),
+            Size = new Size(550, 22),
+            Font = new Font("Segoe UI", 9f, FontStyle.Bold),
+            ForeColor = Color.FromArgb(100, 220, 140)
+        };
+
+        btnCheckUpdate.Click += async (s, e) =>
+        {
+            btnCheckUpdate.Enabled = false;
+            lblUpdateStatus.ForeColor = Color.FromArgb(0, 190, 255);
+            lblUpdateStatus.Text = LocalizationService.Get("about_checking_updates");
+
+            var result = await UpdateService.CheckForUpdatesAsync();
+            btnCheckUpdate.Enabled = true;
+
+            if (result.IsUpdateAvailable)
+            {
+                lblUpdateStatus.ForeColor = Color.FromArgb(255, 215, 0);
+                lblUpdateStatus.Text = string.Format(LocalizationService.Get("about_update_available"), result.LatestVersion);
+
+                var btnDownload = new Button
+                {
+                    Text = LocalizationService.Get("about_update_btn"),
+                    Location = new Point(22, 266),
+                    Size = new Size(200, 32),
+                    BackColor = Color.FromArgb(0, 122, 255),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Cursor = Cursors.Hand,
+                    Font = new Font("Segoe UI", 9f, FontStyle.Bold)
+                };
+                btnDownload.FlatAppearance.BorderSize = 0;
+                btnDownload.Click += (ds, de) => OpenUrl(result.ReleaseUrl);
+                pnlAboutCard.Controls.Add(btnDownload);
+            }
+            else if (string.IsNullOrEmpty(result.ErrorMessage))
+            {
+                lblUpdateStatus.ForeColor = Color.FromArgb(100, 220, 140);
+                lblUpdateStatus.Text = string.Format(LocalizationService.Get("about_latest_version"), result.CurrentVersion);
+            }
+            else
+            {
+                lblUpdateStatus.ForeColor = Color.FromArgb(255, 120, 120);
+                lblUpdateStatus.Text = "Hata: " + result.ErrorMessage;
+            }
+        };
+
+        var lblCopy = new Label { Text = LocalizationService.Get("about_copy"), Location = new Point(22, 305), Size = new Size(500, 20), Font = new Font("Segoe UI", 8.5f, FontStyle.Italic), ForeColor = Color.FromArgb(110, 125, 145) };
+
+        pnlAboutCard.Size = new Size(590, 335);
+        pnlAboutCard.Controls.AddRange(new Control[] { lblTitle, lblVer, lblDev, lblEmailPrefix, lnkEmail, lblXPrefix, lnkX, lblGitPrefix, lnkGit, btnCheckUpdate, _chkAutoCheckUpdates, lblUpdateStatus, lblCopy });
         _pnlAboutTab.Controls.AddRange(new Control[] { lblHeader, pnlAboutCard });
     }
 
@@ -875,18 +974,31 @@ public class SettingsForm : Form
         if (_tbWeatherOpacity != null) _settings.WeatherBgOpacity = _tbWeatherOpacity.Value;
         if (_tbTempOpacity != null) _settings.TempBgOpacity = _tbTempOpacity.Value;
 
+        if (_cmbProvider?.SelectedItem is ProviderItem pItem) _settings.WeatherProvider = pItem.Code;
         if (_cmbInterval?.SelectedItem is IntervalItem intItem) _settings.UpdateIntervalHours = intItem.Hours;
         if (_cmbTempUnit != null) _settings.TemperatureUnit = _cmbTempUnit.SelectedIndex == 1 ? "fahrenheit" : "celsius";
         if (_cmbWindUnit != null) _settings.WindSpeedUnit = _cmbWindUnit.SelectedIndex switch { 1 => "mph", 2 => "ms", _ => "kmh" };
-        if (_chkAutoStart != null) _settings.StartWithWindows = _chkAutoStart.Checked;
+        if (_chkAutoCheckUpdates != null) _settings.AutoCheckUpdates = _chkAutoCheckUpdates.Checked;
         if (_chkHighContrast != null) _settings.HighContrastTrayIcon = _chkHighContrast.Checked;
-
-        SetAutoStartWithWindows(_settings.StartWithWindows);
 
         ConfigManager.SaveSettings(_settings);
         _onSettingsSaved(_settings);
 
         UpdateLivePreview();
+    }
+
+    private void SelectProviderItem(string code)
+    {
+        if (_cmbProvider == null) return;
+        for (int i = 0; i < _cmbProvider.Items.Count; i++)
+        {
+            if (_cmbProvider.Items[i] is ProviderItem item && item.Code.Equals(code, StringComparison.OrdinalIgnoreCase))
+            {
+                _cmbProvider.SelectedIndex = i;
+                return;
+            }
+        }
+        _cmbProvider.SelectedIndex = 0;
     }
 
     private void SelectIntervalItem(int hours)
@@ -925,6 +1037,14 @@ public class SettingsForm : Form
             }
         }
         catch { }
+    }
+
+    private class ProviderItem
+    {
+        public string Label { get; }
+        public string Code { get; }
+        public ProviderItem(string label, string code) { Label = label; Code = code; }
+        public override string ToString() => Label;
     }
 
     private class IntervalItem

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using HaYTooLWeather.Forms;
@@ -27,6 +28,7 @@ public class TrayAppContext : ApplicationContext
     private Icon? _currentTempIcon;
 
     private WeatherCardForm? _activeWeatherCard;
+    private string? _pendingUpdateUrl;
 
     public TrayAppContext()
     {
@@ -60,6 +62,7 @@ public class TrayAppContext : ApplicationContext
             Text = "HaYTooL Weather"
         };
         _notifyIconWeather.MouseClick += OnTrayIconMouseClick;
+        _notifyIconWeather.BalloonTipClicked += (s, e) => OpenPendingUpdateUrl();
 
         _notifyIconTemp = new NotifyIcon
         {
@@ -69,6 +72,7 @@ public class TrayAppContext : ApplicationContext
             Text = "HaYTooL Weather"
         };
         _notifyIconTemp.MouseClick += OnTrayIconMouseClick;
+        _notifyIconTemp.BalloonTipClicked += (s, e) => OpenPendingUpdateUrl();
 
         RebuildContextMenu();
 
@@ -78,8 +82,38 @@ public class TrayAppContext : ApplicationContext
         SetTimerInterval(_settings.UpdateIntervalHours);
         _updateTimer.Start();
 
-        // 6. İlk Hava Durumu Sorgulamasını Başlat
+        // 6. İlk Hava Durumu Sorgulamasını ve Güncelleme Kontrolünü Başlat
         _ = RefreshWeatherAsync(silent: false);
+        if (_settings.AutoCheckUpdates) _ = CheckUpdatesOnStartupAsync();
+    }
+
+    private void OpenPendingUpdateUrl()
+    {
+        if (!string.IsNullOrEmpty(_pendingUpdateUrl))
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo { FileName = _pendingUpdateUrl, UseShellExecute = true });
+            }
+            catch { }
+        }
+    }
+
+    private async Task CheckUpdatesOnStartupAsync()
+    {
+        try
+        {
+            await Task.Delay(3000); // Başlangıçta 3 saniye sonra arka planda sorgula
+            var result = await UpdateService.CheckForUpdatesAsync();
+            if (result.IsUpdateAvailable)
+            {
+                _pendingUpdateUrl = result.ReleaseUrl;
+                string title = string.Format(LocalizationService.Get("notify_update_title"), result.LatestVersion);
+                string body = string.Format(LocalizationService.Get("notify_update_body"), result.LatestVersion);
+                _notifyIconWeather.ShowBalloonTip(7000, title, body, ToolTipIcon.Info);
+            }
+        }
+        catch { }
     }
 
     private void SetTimerInterval(int hours)
@@ -119,10 +153,24 @@ public class TrayAppContext : ApplicationContext
         itemSettings.Click += (s, e) => OpenControlCenter("location");
         _contextMenu.Items.Add(itemSettings);
 
-        // 4. Detaylı Hava Durumu Kartı
-        var itemDetails = new ToolStripMenuItem("📊 " + LocalizationService.Get("menu_detailed_forecast"));
-        itemDetails.Click += (s, e) => ToggleWeatherCard();
-        _contextMenu.Items.Add(itemDetails);
+        _contextMenu.Items.Add(new ToolStripSeparator());
+
+        // 4. Windows Başlangıcında Çalıştır (Net Görsel Durumlu & Anında Yenilenen)
+        var autoStartIcon = _settings.StartWithWindows ? "✅" : "⬜";
+        var autoStartBadge = _settings.StartWithWindows ? LocalizationService.Get("status_on") : LocalizationService.Get("status_off");
+        var itemAutoStart = new ToolStripMenuItem($"{autoStartIcon} 🚀 {LocalizationService.Get("gen_autostart")}  {autoStartBadge}")
+        {
+            Font = new Font("Segoe UI", 9.5f, FontStyle.Regular),
+            ForeColor = _settings.StartWithWindows ? Color.FromArgb(0, 230, 160) : Color.FromArgb(200, 215, 230)
+        };
+        itemAutoStart.Click += (s, e) =>
+        {
+            _settings.StartWithWindows = !_settings.StartWithWindows;
+            ConfigManager.SetAutoStartWithWindows(_settings.StartWithWindows);
+            ConfigManager.SaveSettings(_settings);
+            RebuildContextMenu();
+        };
+        _contextMenu.Items.Add(itemAutoStart);
 
         _contextMenu.Items.Add(new ToolStripSeparator());
 
@@ -310,21 +358,24 @@ public class TrayAppContext : ApplicationContext
         var currentLat = _settings.Latitude;
         var currentLng = _settings.Longitude;
         var currentCity = _settings.City;
+        var currentProvider = _settings.WeatherProvider;
 
         using var settingsForm = new SettingsForm(_weatherService, _settings, async savedSettings =>
         {
             bool locationChanged = (Math.Abs(currentLat - savedSettings.Latitude) > 0.0001 || 
                                     Math.Abs(currentLng - savedSettings.Longitude) > 0.0001 || 
                                     !currentCity.Equals(savedSettings.City, StringComparison.OrdinalIgnoreCase));
+            bool providerChanged = !currentProvider.Equals(savedSettings.WeatherProvider, StringComparison.OrdinalIgnoreCase);
 
             _settings = savedSettings;
             SetTimerInterval(_settings.UpdateIntervalHours);
 
-            if (locationChanged)
+            if (locationChanged || providerChanged)
             {
                 currentLat = _settings.Latitude;
                 currentLng = _settings.Longitude;
                 currentCity = _settings.City;
+                currentProvider = _settings.WeatherProvider;
                 await RefreshWeatherAsync(silent: false);
             }
             else if (_weatherService.LastWeatherData != null)

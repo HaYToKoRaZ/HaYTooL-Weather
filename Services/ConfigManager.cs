@@ -58,6 +58,7 @@ public static class ConfigManager
                         if (key == "LANGUAGE") settings.Language = val;
                         else if (key == "THEME") settings.Theme = val;
                         else if (key == "STARTWITHWINDOWS") settings.StartWithWindows = bool.TryParse(val, out var sw) && sw;
+                        else if (key == "AUTOCHECKUPDATES") settings.AutoCheckUpdates = !bool.TryParse(val, out var acu) || acu;
                         break;
 
                     case "WEATHER":
@@ -69,6 +70,7 @@ public static class ConfigManager
                         else if (key == "UPDATEINTERVALHOURS" && int.TryParse(val, out var interval)) settings.UpdateIntervalHours = interval <= 0 ? 6 : interval;
                         else if (key == "TEMPERATUREUNIT") settings.TemperatureUnit = val;
                         else if (key == "WINDSPEEDUNIT") settings.WindSpeedUnit = val;
+                        else if (key == "WEATHERPROVIDER") settings.WeatherProvider = string.IsNullOrWhiteSpace(val) ? "auto" : val.ToLowerInvariant();
                         break;
 
                     case "UI":
@@ -125,6 +127,7 @@ public static class ConfigManager
         sb.AppendLine($"; Tema: auto, dark, light");
         sb.AppendLine($"Theme={settings.Theme}");
         sb.AppendLine($"StartWithWindows={settings.StartWithWindows.ToString().ToLowerInvariant()}");
+        sb.AppendLine($"AutoCheckUpdates={settings.AutoCheckUpdates.ToString().ToLowerInvariant()}");
         sb.AppendLine();
 
         sb.AppendLine("[Weather]");
@@ -140,6 +143,8 @@ public static class ConfigManager
         sb.AppendLine($"TemperatureUnit={settings.TemperatureUnit}");
         sb.AppendLine($"; Rüzgar Hızı Birimi: kmh, mph, ms");
         sb.AppendLine($"WindSpeedUnit={settings.WindSpeedUnit}");
+        sb.AppendLine($"; Hava Durumu Veri Kaynağı: auto, mgm, ecmwf, gfs, dwd");
+        sb.AppendLine($"WeatherProvider={settings.WeatherProvider}");
         sb.AppendLine();
 
         sb.AppendLine("[UI]");
@@ -172,5 +177,32 @@ public static class ConfigManager
         {
             // Dosya yazma hatası
         }
+    }
+
+    /// <summary>
+    /// Windows başlangıcında otomatik başlatma kaydını Registry üzerinde günceller.
+    /// </summary>
+    public static void SetAutoStartWithWindows(bool enable)
+    {
+        try
+        {
+            const string runKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+            using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(runKey, true);
+            if (key == null) return;
+
+            string exePath = Application.ExecutablePath;
+            if (enable)
+            {
+                key.SetValue("HaYTooLWeather", $"\"{exePath}\"");
+            }
+            else
+            {
+                if (key.GetValue("HaYTooLWeather") != null)
+                {
+                    key.DeleteValue("HaYTooLWeather");
+                }
+            }
+        }
+        catch { }
     }
 }

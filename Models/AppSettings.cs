@@ -20,20 +20,24 @@ public class AppSettings
     public string TemperatureUnit { get; set; } = "celsius"; // celsius, fahrenheit
     public string WindSpeedUnit { get; set; } = "kmh"; // kmh, mph, ms
 
+    // Hava Durumu Veri Kaynağı / Model Tercihi (auto, mgm, ecmwf, gfs, dwd)
+    public string WeatherProvider { get; set; } = "auto";
+
     // Sistem Tepsisi Gösterim Modu
     public string TrayDisplayMode { get; set; } = "dual"; // dual, temp_only, weather_only, single_compact
 
     // Hava Durumu Simgesi Özelleştirmeleri
-    public int WeatherIconScale { get; set; } = 100; // %55 - %175
+    public int WeatherIconScale { get; set; } = 100; // %40 - %200
     public string WeatherBgColor { get; set; } = "#000000";
     public int WeatherBgOpacity { get; set; } = 0; // %0 (Şeffaf) - %100
 
     // Sıcaklık Metni Özelleştirmeleri
-    public int TempTextScale { get; set; } = 100; // %55 - %175
+    public int TempTextScale { get; set; } = 100; // %40 - %200
     public string TempBgColor { get; set; } = "#000000";
     public int TempBgOpacity { get; set; } = 0; // %0 (Şeffaf) - %100
     public bool HighContrastTrayIcon { get; set; } = true;
 
-    // Bildirim Tercihi
+    // Bildirim ve Güncelleme Tercihleri
     public bool ShowNotificationOnUpdate { get; set; } = false;
+    public bool AutoCheckUpdates { get; set; } = true;
 }

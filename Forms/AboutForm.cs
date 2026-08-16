@@ -39,7 +39,7 @@ public class AboutForm : Form
 
         var lblVersion = new Label
         {
-            Text = "Sürüm 1.0.0 (Windows Native Edition)",
+            Text = "Sürüm 3.0.0 (Windows Native Edition)",
             Font = new Font("Segoe UI", 9f, FontStyle.Regular),
             ForeColor = Color.FromArgb(0, 170, 255),
             AutoSize = true,
@@ -99,13 +99,17 @@ public class AboutForm : Form
         };
         lnkX.LinkClicked += (s, e) => OpenUrl("https://x.com/HaYTo");
 
-        var lblGithub = new Label
+        var lnkGithub = new LinkLabel
         {
-            Text = "🐙 GitHub: [Belirtilecek / Yakında]",
-            ForeColor = Color.FromArgb(150, 160, 175),
+            Text = "🐙 GitHub: https://github.com/HaYToKoRaZ/HaYTooL-Weather",
+            LinkColor = Color.FromArgb(0, 180, 255),
+            ActiveLinkColor = Color.FromArgb(100, 210, 255),
+            VisitedLinkColor = Color.FromArgb(0, 180, 255),
             AutoSize = true,
-            Location = new Point(26, 235)
+            Location = new Point(26, 235),
+            Cursor = Cursors.Hand
         };
+        lnkGithub.LinkClicked += (s, e) => OpenUrl("https://github.com/HaYToKoRaZ/HaYTooL-Weather");
 
         var lblPrivacy = new Label
         {
@@ -132,7 +136,7 @@ public class AboutForm : Form
         pnlContent.Controls.AddRange(new Control[] {
             lblTitle, lblVersion, lblDesc,
             lblDev, lblContactHeader,
-            lnkEmail, lnkX, lblGithub,
+            lnkEmail, lnkX, lnkGithub,
             lblPrivacy, btnClose
         });
 
