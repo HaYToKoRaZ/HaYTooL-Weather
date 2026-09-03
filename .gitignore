@@ -1,5 +1,6 @@
 # Yerel ve Gizli Klasörler (Local & Private)
 0nogithub/
+websites/
 
 # Derleme ve Çıktı Dizinleri (Build & Dist)
 bin/

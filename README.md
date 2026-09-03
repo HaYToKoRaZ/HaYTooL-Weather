@@ -20,6 +20,7 @@
 - **Detailed Weather Card:** Click tray icon to open a sleek dark glass popup with humidity, wind speed, precipitation probability, and a 7-day forecast with direct web links.
 - **Portable `.ini` Configuration:** All settings are stored in `HaYTooLWeather.ini` located in the executable folder.
 - **7 Languages Supported:** English (`en`), Turkish (`tr`), Spanish (`es`), German (`de`), Portuguese (`pt`), Arabic (`ar`), Russian (`ru`).
+- **HaYTooL PoRTaL:** Discover and access all HaYTooL ecosystem desktop applications at [https://haytokoraz.github.io/](https://haytokoraz.github.io/).
 - **Zero Telemetry:** 100% private, zero tracking, zero telemetry.
 
 ### 🚀 Build & Run Locally
@@ -46,12 +47,19 @@ dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile
 - **Detaylı Hava Kartı:** Tıklandığında açılan modern kart ile nem, rüzgar, yağış ihtimali, 7 günlük tahminler ve web bağlantısını görüntüler.
 - **Taşınabilir (Portable) `.ini` Yapılandırması:** Tüm ayarlar exe ile aynı dizindeki `HaYTooLWeather.ini` dosyasında saklanır.
 - **7 Dil Desteği:** Türkçe (`tr`), English (`en`), Español (`es`), Deutsch (`de`), Português (`pt`), العربية (`ar`), Русский (`ru`).
+- **🌐 HaYTooL PoRTaL:** Tüm HaYTooL masaüstü uygulamalarını tek bir merkezden keşfedin ve indirin: [https://haytokoraz.github.io/](https://haytokoraz.github.io/)
 - **Sıfır Telemetri:** Hiçbir veri toplanmaz, %100 gizlilik odaklıdır.
+
+---
+
+## 🌐 HaYTooL Ecosystem / Ekosistem
+- **HaYTooL PoRTaL:** [https://haytokoraz.github.io/](https://haytokoraz.github.io/)
 
 ---
 
 ## 📬 Contact & Support / İletişim & Destek
 - **Developer / Geliştirici:** HaYTo
+- **HaYTooL PoRTaL:** [https://haytokoraz.github.io/](https://haytokoraz.github.io/)
 - **Email / E-posta:** [korazhayto@gmail.com](mailto:korazhayto@gmail.com)
 - **X (Twitter):** [https://x.com/HaYTo](https://x.com/HaYTo)
 - **GitHub:** [https://github.com/HaYToKoRaZ/HaYTooL-Weather](https://github.com/HaYToKoRaZ/HaYTooL-Weather)

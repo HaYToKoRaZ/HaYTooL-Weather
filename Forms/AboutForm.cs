@@ -75,6 +75,18 @@ public class AboutForm : Form
             Location = new Point(26, 160)
         };
 
+        var lnkPortal = new LinkLabel
+        {
+            Text = "🌐 HaYTooL PoRTaL: https://haytokoraz.github.io/",
+            LinkColor = Color.FromArgb(0, 220, 180),
+            ActiveLinkColor = Color.FromArgb(100, 255, 220),
+            VisitedLinkColor = Color.FromArgb(0, 220, 180),
+            AutoSize = true,
+            Location = new Point(26, 185),
+            Cursor = Cursors.Hand
+        };
+        lnkPortal.LinkClicked += (s, e) => OpenUrl("https://haytokoraz.github.io/");
+
         var lnkEmail = new LinkLabel
         {
             Text = "📧 E-posta: korazhayto@gmail.com",
@@ -82,7 +94,7 @@ public class AboutForm : Form
             ActiveLinkColor = Color.FromArgb(100, 210, 255),
             VisitedLinkColor = Color.FromArgb(0, 180, 255),
             AutoSize = true,
-            Location = new Point(26, 185),
+            Location = new Point(26, 208),
             Cursor = Cursors.Hand
         };
         lnkEmail.LinkClicked += (s, e) => OpenUrl("mailto:korazhayto@gmail.com");
@@ -94,7 +106,7 @@ public class AboutForm : Form
             ActiveLinkColor = Color.FromArgb(100, 210, 255),
             VisitedLinkColor = Color.FromArgb(0, 180, 255),
             AutoSize = true,
-            Location = new Point(26, 210),
+            Location = new Point(26, 230),
             Cursor = Cursors.Hand
         };
         lnkX.LinkClicked += (s, e) => OpenUrl("https://x.com/HaYTo");
@@ -106,7 +118,7 @@ public class AboutForm : Form
             ActiveLinkColor = Color.FromArgb(100, 210, 255),
             VisitedLinkColor = Color.FromArgb(0, 180, 255),
             AutoSize = true,
-            Location = new Point(26, 235),
+            Location = new Point(26, 252),
             Cursor = Cursors.Hand
         };
         lnkGithub.LinkClicked += (s, e) => OpenUrl("https://github.com/HaYToKoRaZ/HaYTooL-Weather");
@@ -117,13 +129,13 @@ public class AboutForm : Form
             Font = new Font("Segoe UI", 8.5f, FontStyle.Italic),
             ForeColor = Color.FromArgb(120, 200, 140),
             AutoSize = true,
-            Location = new Point(26, 266)
+            Location = new Point(26, 280)
         };
 
         var btnClose = new Button
         {
             Text = "Tamam",
-            Location = new Point(310, 275),
+            Location = new Point(310, 285),
             Size = new Size(95, 32),
             BackColor = Color.FromArgb(0, 122, 255),
             ForeColor = Color.White,
@@ -136,7 +148,7 @@ public class AboutForm : Form
         pnlContent.Controls.AddRange(new Control[] {
             lblTitle, lblVersion, lblDesc,
             lblDev, lblContactHeader,
-            lnkEmail, lnkX, lnkGithub,
+            lnkPortal, lnkEmail, lnkX, lnkGithub,
             lblPrivacy, btnClose
         });
 
