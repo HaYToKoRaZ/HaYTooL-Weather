@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HaYTooL Weather — Dynamic Weather Application for Windows System Tray</title>
+  <meta name="description" content="Ultra-lightweight, customizable Windows notification area live weather app by HaYTo. Multi-language, cute cat companion, and portable.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  
+  <!-- Google Fonts Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient background elements -->
+  <div class="ambient-decor floating-cloud">☁️</div>
+  <div class="ambient-decor floating-sun">☀️</div>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="logo-wrap">
+        <img src="assets/logo.png" alt="HaYTooL Weather Logo" class="brand-logo">
+        <span class="brand-name">HaYTooL Weather</span>
+        <span class="brand-version">v3.0.0</span>
+      </a>
+
+      <div class="nav-right">
+        <!-- 7 Language Selector -->
+        <div class="lang-selector">
+          <button class="lang-btn" id="langBtn">
+            <span id="currentLangText">🇹🇷 TR</span>
+            <span>▼</span>
+          </button>
+          <div class="lang-dropdown" id="langDropdown">
+            <a class="lang-item" data-lang="tr">🇹🇷 Türkçe</a>
+            <a class="lang-item" data-lang="en">🇬🇧 English</a>
+            <a class="lang-item" data-lang="es">🇪🇸 Español</a>
+            <a class="lang-item" data-lang="de">🇩🇪 Deutsch</a>
+            <a class="lang-item" data-lang="pt">🇵🇹 Português</a>
+            <a class="lang-item" data-lang="ar">🇸🇦 العربية</a>
+            <a class="lang-item" data-lang="ru">🇷🇺 Русский</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <div class="hero-badge" data-i18n="hero_badge">
+            🐱 Sevimli Kedi Temalı & Ultra Hafif Masaüstü Asistanı
+          </div>
+          <h1 class="hero-title" data-i18n="hero_title">
+            Windows Sistem Tepsisinde Dinamik Hava Durumu
+          </h1>
+          <p class="hero-desc" data-i18n="hero_desc">
+            HaYTooL Weather, Windows bildirim alanında (saatin yanında) sessizce yaşayan, anlık sıcaklık ve hava durumunu dinamik simgelerle çizen tüy kadar hafif açık kaynaklı masaüstü uygulamasıdır.
+          </p>
+
+          <div class="hero-actions">
+            <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather/releases" target="_blank" class="btn btn-primary" data-i18n="btn_download">
+              📥 İndir (v3.0.0 Portable)
+            </a>
+            <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather" target="_blank" class="btn btn-secondary" data-i18n="btn_github">
+              🐙 GitHub Deposu
+            </a>
+            <a href="https://haytokoraz.github.io/" target="_blank" class="btn btn-portal" data-i18n="btn_portal">
+              🌐 HaYTooL PoRTaL
+            </a>
+          </div>
+        </div>
+
+        <!-- Mascot Visual -->
+        <div class="hero-visual">
+          <div class="mascot-container">
+            <img src="assets/weather_cat.jpg" alt="HaYTooL Weather Cute Cat Mascot" class="mascot-img">
+            <div class="floating-badge badge-temp" data-i18n="badge_temp">
+              🌡️ Canlı Çift Tepsi Alanı
+            </div>
+            <div class="floating-badge badge-light" data-i18n="badge_light">
+              🪶 Sıfır Yük & Yüksek Performans
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Taskbar Simulation Section -->
+    <section class="simulator-section">
+      <div class="container">
+        <h2 class="section-title" data-i18n="sim_title">Canlı Görev Çubuğu Simülatörü</h2>
+        <p class="section-subtitle" data-i18n="sim_subtitle">
+          Uygulamayı indirmeden önce Windows görev çubuğunuzda nasıl görüneceğini test edin!
+        </p>
+
+        <div class="simulator-box">
+          <!-- Windows Taskbar Mock -->
+          <div class="taskbar-simulation">
+            <div class="taskbar-left">
+              <span>🪟 Start</span>
+              <span>🔍 Ara</span>
+              <span>📁 Dosyalar</span>
+            </div>
+
+            <div class="taskbar-tray">
+              <!-- Live tray weather icons -->
+              <div class="tray-icon-pair" id="simTrayIconPair">
+                <span class="tray-weather-icon" id="simTrayIcon">☀️</span>
+                <span class="tray-weather-temp" id="simTrayTemp">24°</span>
+              </div>
+              <div class="taskbar-clock" id="simClock">
+                18:30<br>03.09.2026
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="sim-controls">
+            <div class="control-group">
+              <label data-i18n="sim_weather_type">Hava Durumu:</label>
+              <select id="simWeatherSelect">
+                <option value="sunny">Güneşli (Sunny)</option>
+                <option value="cloudy">Bulutlu (Cloudy)</option>
+                <option value="rainy">Yağmurlu (Rainy)</option>
+                <option value="snowy">Karlı (Snowy)</option>
+                <option value="storm">Fırtınalı (Thunderstorm)</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label data-i18n="sim_icon_size">İkon Boyutu (%40 - %200):</label>
+              <input type="range" id="simIconScale" min="40" max="200" value="100">
+            </div>
+
+            <div class="control-group">
+              <label data-i18n="sim_text_size">Sıcaklık Boyutu (%40 - %200):</label>
+              <input type="range" id="simTextScale" min="40" max="200" value="100">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section class="features-section">
+      <div class="container">
+        <h2 class="section-title" data-i18n="feat_title">Öne Çıkan Özellikler</h2>
+        <p class="section-subtitle" data-i18n="feat_subtitle">
+          Windows için özel olarak tasarlanmış tüy kadar hafif hava durumu gücü
+        </p>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">✨</div>
+            <h3 data-i18n="feat_1_title">Dinamik Çift Tepsi İkonu</h3>
+            <p data-i18n="feat_1_desc">Windows saatinin hemen solunda yüksek çözünürlüklü hava ikonu ve büyük sıcaklık rakamları yan yana yer alır.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">📡</div>
+            <h3 data-i18n="feat_2_title">5 Farklı Hava Tahmin Modeli</h3>
+            <p data-i18n="feat_2_desc">MGM (Resmi Türkiye Meteorolojisi), ECMWF, GFS, DWD ve Otomatik Yapay Zeka destekli sağlayıcı desteği.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3 data-i18n="feat_3_title">Canlı Önizleme & %40-%200 Ölçek</h3>
+            <p data-i18n="feat_3_desc">İster minik ister devasa; simge ve derece boyutunu, arka plan renk ve opaklığını zevkinize göre özelleştirin.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">📦</div>
+            <h3 data-i18n="feat_4_title">Taşınabilir (Portable) & .INI Yapısı</h3>
+            <p data-i18n="feat_4_desc">Kurulum gerekmez. Tek parça .exe çalışır ve tüm ayarlarını yanındaki HaYTooLWeather.ini dosyasında saklar.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🌍</div>
+            <h3 data-i18n="feat_5_title">7 Dil & Tek Tıkla Başkentler</h3>
+            <p data-i18n="feat_5_desc">Türkçe, İngilizce, İspanyolca, Almanca, Portekizce, Arapça ve Rusça arayüz. 7 dilin başkenti tek tıkla seçilebilir.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3 data-i18n="feat_6_title">100% Gizlilik & Sıfır Telemetri</h3>
+            <p data-i18n="feat_6_desc">Hiçbir kullanıcı verisi, konum veya alışkanlık toplanmaz. Tamamen açık kaynak ve MIT lisanslıdır.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portal Ecosystem Banner -->
+    <section class="container">
+      <div class="portal-banner">
+        <h2 data-i18n="portal_title">HaYTooL Ekosistemini Keşfedin</h2>
+        <p data-i18n="portal_desc">
+          HaYTo tarafından geliştirilen tüm hafif, modern ve üretkenlik artıran masaüstü araçlarına tek tıkla ulaşın.
+        </p>
+        <a href="https://haytokoraz.github.io/" target="_blank" class="btn btn-portal" data-i18n="portal_btn">
+          🌐 HaYTooL PoRTaL'ı Ziyaret Et
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p data-i18n="footer_desc">HaYTooL Weather — Geliştirici: HaYTo. Açık kaynak kodlu ve ücretsizdir.</p>
+      <div class="footer-links">
+        <a href="https://haytokoraz.github.io/" target="_blank">HaYTooL PoRTaL</a>
+        <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather" target="_blank">GitHub</a>
+        <a href="mailto:korazhayto@gmail.com">korazhayto@gmail.com</a>
+        <a href="https://x.com/HaYTo" target="_blank">X (Twitter)</a>
+      </div>
+      <p style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="footer_privacy">
+        Gizlilik Dostu | Telemetrisiz | MIT Lisansı
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
