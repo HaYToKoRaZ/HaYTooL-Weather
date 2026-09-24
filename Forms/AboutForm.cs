@@ -39,7 +39,7 @@ public class AboutForm : Form
 
         var lblVersion = new Label
         {
-            Text = "Sürüm 3.0.0 (Windows Native Edition)",
+            Text = $"Sürüm {AppVersion.GetCurrentVersion()} (Windows Native Edition)",
             Font = new Font("Segoe UI", 9f, FontStyle.Regular),
             ForeColor = Color.FromArgb(0, 170, 255),
             AutoSize = true,

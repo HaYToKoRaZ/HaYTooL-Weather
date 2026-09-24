@@ -24,24 +24,9 @@ public static class UpdateService
     }
 
     /// <summary>
-    /// Kök dizindeki VERSION dosyasını okur veya varsayılan v1.0.0 sürümünü döner.
+    /// Merkezi AppVersion sınıfı üzerinden anlık sürümü döner.
     /// </summary>
-    public static string GetCurrentVersion()
-    {
-        try
-        {
-            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            var versionPath = Path.Combine(baseDir, "VERSION");
-            if (File.Exists(versionPath))
-            {
-                var ver = File.ReadAllText(versionPath).Trim();
-                if (!string.IsNullOrEmpty(ver)) return ver;
-            }
-        }
-        catch { }
-
-        return "v3.0.0";
-    }
+    public static string GetCurrentVersion() => AppVersion.GetCurrentVersion();
 
     /// <summary>
     /// GitHub API'sinden en son yayınlanan sürümü sorgular ve mevcut sürümle karşılaştırır.

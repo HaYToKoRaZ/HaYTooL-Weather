@@ -793,7 +793,7 @@ public class SettingsForm : Form
 
         var pnlAboutCard = new Panel { Location = new Point(0, y), Size = new Size(590, 265), BackColor = Color.FromArgb(24, 28, 38), Padding = new Padding(22) };
         var lblTitle = new Label { Text = "HaYTooL Weather", Location = new Point(22, 18), Size = new Size(400, 26), Font = new Font("Segoe UI", 13.5f, FontStyle.Bold), ForeColor = Color.White };
-        var lblVer = new Label { Text = LocalizationService.Get("about_ver"), Location = new Point(22, 46), Size = new Size(500, 20), Font = new Font("Segoe UI", 9f), ForeColor = Color.FromArgb(130, 145, 170) };
+        var lblVer = new Label { Text = string.Format(LocalizationService.Get("about_ver"), AppVersion.GetCurrentVersion()), Location = new Point(22, 46), Size = new Size(500, 20), Font = new Font("Segoe UI", 9f), ForeColor = Color.FromArgb(130, 145, 170) };
 
         var lblDev = new Label { Text = LocalizationService.Get("about_dev"), Location = new Point(22, 82), Size = new Size(400, 22), Font = new Font("Segoe UI", 10.5f, FontStyle.Bold), ForeColor = Color.FromArgb(0, 210, 255) };
 
