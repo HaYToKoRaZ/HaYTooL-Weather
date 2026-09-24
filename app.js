@@ -3,7 +3,7 @@ const translations = {
     hero_badge: "🐱 Sevimli Kedi Temalı & Ultra Hafif Masaüstü Asistanı",
     hero_title: "Windows Sistem Tepsisinde Dinamik Hava Durumu",
     hero_desc: "HaYTooL Weather, Windows bildirim alanında (saatin yanında) sessizce yaşayan, anlık sıcaklık ve hava durumunu dinamik simgelerle çizen tüy kadar hafif açık kaynaklı masaüstü uygulamasıdır.",
-    btn_download: "📥 İndir (v3.0.0 Portable)",
+    btn_download: "📥 İndir (Portable)",
     btn_github: "🐙 GitHub Deposu",
     btn_portal: "🌐 HaYTooL PoRTaL",
     badge_temp: "🌡️ Canlı Çift Tepsi Alanı",
@@ -41,7 +41,7 @@ const translations = {
     hero_badge: "🐱 Cute Cat Mascot & Feather-Light Desktop Companion",
     hero_title: "Dynamic Weather in Windows System Tray",
     hero_desc: "HaYTooL Weather is an ultra-lightweight desktop app that lives silently in your Windows Notification Area next to the clock, rendering dynamic live temperature and weather icons.",
-    btn_download: "📥 Download (v3.0.0 Portable)",
+    btn_download: "📥 Download (Portable)",
     btn_github: "🐙 GitHub Repository",
     btn_portal: "🌐 HaYTooL PoRTaL",
     badge_temp: "🌡️ Live Dual Tray Icons",
@@ -79,7 +79,7 @@ const translations = {
     hero_badge: "🐱 Mascota Gato Adorable & Compañero Ultraligero",
     hero_title: "Clima Dinámico en la Bandeja del Sistema Windows",
     hero_desc: "HaYTooL Weather vive silenciosamente junto al reloj de Windows, mostrando iconos meteorológicos dinámicos y temperatura en tiempo real.",
-    btn_download: "📥 Descargar (v3.0.0 Portable)",
+    btn_download: "📥 Descargar (Portable)",
     btn_github: "🐙 Repositorio GitHub",
     btn_portal: "🌐 HaYTooL PoRTaL",
     badge_temp: "🌡️ Iconos Dinámicos Duales",
@@ -113,7 +113,7 @@ const translations = {
     hero_badge: "🐱 Süßes Katzenmaskottchen & Federleichter Begleiter",
     hero_title: "Dynamisches Wetter im Windows System-Tray",
     hero_desc: "HaYTooL Weather läuft lautlos neben der Taskleistenuhr und rendert Live-Temperatur und Wettersymbole dynamisch.",
-    btn_download: "📥 Herunterladen (v3.0.0 Portable)",
+    btn_download: "📥 Herunterladen (Portable)",
     btn_github: "🐙 GitHub Repository",
     btn_portal: "🌐 HaYTooL PoRTaL",
     badge_temp: "🌡️ Duale Tray-Symbole",
@@ -147,8 +147,8 @@ const translations = {
     hero_badge: "🐱 Mascote Gato Fofo & Companheiro Ultraleve",
     hero_title: "Clima Dinâmico na Área de Notificação do Windows",
     hero_desc: "HaYTooL Weather vive silenciosamente ao lado do relógio do Windows, renderizando ícones e temperaturas em tempo real.",
-    btn_download: "📥 Baixar (v3.0.0 Portable)",
-    btn_github: "🐙 Repositório GitHub",
+    btn_download: "📥 Baixar (Portable)",
+    btn_github: "🐙 Repositorio GitHub",
     btn_portal: "🌐 HaYTooL PoRTaL",
     badge_temp: "🌡️ Ícones Duplos Dinâmicos",
     badge_light: "🪶 Leve como Pena",
@@ -181,7 +181,7 @@ const translations = {
     hero_badge: "🐱 تميمة القط اللطيفة ومساعد سطح المكتب الخفيف جداً",
     hero_title: "طقس ديناميكي في شريط مهام ويندوز",
     hero_desc: "تطبيق HaYTooL Weather يعمل بخفة متناهية بجوار ساعة ويندوز، ويعرض أيقونات الطقس ودرجات الحرارة الحية بتصميم فائق الأناقة.",
-    btn_download: "📥 تحميل (v3.0.0 محمول)",
+    btn_download: "📥 تحميل (محمول)",
     btn_github: "🐙 مستودع GitHub",
     btn_portal: "🌐 HaYTooL PoRTaL",
     badge_temp: "🌡️ أيقونات مزدوجة حية",
@@ -215,7 +215,7 @@ const translations = {
     hero_badge: "🐱 Милый котик-талисман и сверхлегкий помощник",
     hero_title: "Динамическая погода в системном трее Windows",
     hero_desc: "HaYTooL Weather незаметно работает рядом с часами Windows, динамически отображая актуальную температуру и символы погоды.",
-    btn_download: "📥 Скачать (v3.0.0 Portable)",
+    btn_download: "📥 Скачать (Portable)",
     btn_github: "🐙 Репозиторий GitHub",
     btn_portal: "🌐 HaYTooL PoRTaL",
     badge_temp: "🌡️ Двойные динамические иконки",
@@ -284,12 +284,20 @@ function setLanguage(lang) {
     item.classList.toggle("active", item.getAttribute("data-lang") === lang);
   });
 
-  // Update current button text
-  const currentLangLabel = {
-    tr: "🇹🇷 TR", en: "🇬🇧 EN", es: "🇪🇸 ES", de: "🇩🇪 DE",
-    pt: "🇵🇹 PT", ar: "🇸🇦 AR", ru: "🇷🇺 RU"
-  }[lang] || "Language";
-  document.getElementById("currentLangText").textContent = currentLangLabel;
+  // Update current button text and flag image
+  const langConfig = {
+    tr: { flag: "https://flagcdn.com/w20/tr.png", text: "TR" },
+    en: { flag: "https://flagcdn.com/w20/gb.png", text: "EN" },
+    es: { flag: "https://flagcdn.com/w20/es.png", text: "ES" },
+    de: { flag: "https://flagcdn.com/w20/de.png", text: "DE" },
+    pt: { flag: "https://flagcdn.com/w20/pt.png", text: "PT" },
+    ar: { flag: "https://flagcdn.com/w20/sa.png", text: "AR" },
+    ru: { flag: "https://flagcdn.com/w20/ru.png", text: "RU" }
+  }[lang] || { flag: "https://flagcdn.com/w20/tr.png", text: "TR" };
+
+  const currentFlagEl = document.getElementById("currentLangFlag");
+  if (currentFlagEl) currentFlagEl.src = langConfig.flag;
+  document.getElementById("currentLangText").textContent = langConfig.text;
   
   localStorage.setItem("haytool_weather_lang", lang);
 }
