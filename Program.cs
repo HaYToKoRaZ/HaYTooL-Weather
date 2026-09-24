@@ -47,6 +47,9 @@ internal static class Program
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
 
+        // HaYTooL Pulse Telemetri sayacını başlat (pc_weather)
+        HaYTooLWeather.Services.PulseTelemetryService.Start();
+
         // Ana sistem tepsisi bağlamını çalıştır
         Application.Run(new TrayAppContext());
     }

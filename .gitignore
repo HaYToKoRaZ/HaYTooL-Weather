@@ -1,6 +1,7 @@
 # Yerel ve Gizli Klasörler (Local & Private)
 0nogithub/
 websites/
+.codebase-memory/
 
 # Derleme ve Çıktı Dizinleri (Build & Dist)
 bin/
