@@ -1,0 +1,61 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Extract Version
+        id: get_version
+        shell: pwsh
+        run: |
+          $ver = if (Test-Path "VERSION") { (Get-Content "VERSION" -Raw).Trim() } else { "v4.0" }
+          $clean = $ver.TrimStart('v')
+          echo "VERSION=$ver" >> $env:GITHUB_OUTPUT
+          echo "CLEAN_VERSION=$clean" >> $env:GITHUB_OUTPUT
+
+      - name: Publish Single-File Release Executable
+        shell: pwsh
+        run: |
+          dotnet publish HaYTooLWeather.csproj -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -p:DebugType=none -p:DebugSymbols=false -p:Version=${{ steps.get_version.outputs.CLEAN_VERSION }} -o publish_out
+
+      - name: Create Portable Zip Package
+        shell: pwsh
+        run: |
+          $dateStr = Get-Date -Format "yyyy-MM-dd"
+          $zipName = "${{ steps.get_version.outputs.VERSION }}_HaYTooL_Weather_${dateStr}_Portable.zip"
+          Compress-Archive -Path "publish_out\HaYTooLWeather.exe", "VERSION", "README.md", "LICENSE" -DestinationPath $zipName -Force
+          echo "ZIP_NAME=$zipName" >> $env:GITHUB_ENV
+
+      - name: Create or Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "${{ steps.get_version.outputs.VERSION }} - HaYTooL Weather Release"
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## 🌤️ HaYTooL Weather ${{ steps.get_version.outputs.VERSION }}
+            Windows Native Portable System Tray Weather Application.
+
+            - **Modüler Sürüm:** ${{ steps.get_version.outputs.VERSION }}
+            - **Platform:** Windows x64 (.NET 10)
+            - **Kurulum:** Taşınabilir (Portable), kurulum gerektirmez. İndirip doğrudan çalıştırabilirsiniz.
+          files: ${{ env.ZIP_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
