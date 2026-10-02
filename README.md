@@ -6,8 +6,12 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Weather/latest/total?color=success&label=Latest%20Release%20Downloads" alt="Latest Release Downloads" /></a>
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather/releases"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Weather/total?color=2ea44f&label=Total%20Downloads" alt="Total Downloads" /></a>
+  <img src="assets/badges/status.svg" alt="Status" />
+  <img src="assets/badges/platform.svg" alt="Platform" />
+  <img src="assets/badges/language.svg" alt="Language" />
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Weather/latest/total?style=for-the-badge&logo=github&color=2ea44f&label=LATEST%20DOWNLOADS" alt="Latest Release Downloads" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather/releases"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Weather/total?style=for-the-badge&logo=github&color=0969da&label=TOTAL%20DOWNLOADS" alt="Total Downloads" /></a>
+  <a href="https://haytokoraz.github.io/" target="_blank"><img src="assets/badges/portal.svg" alt="HaYTooL PoRTaL" /></a>
 </p>
 
 ---
