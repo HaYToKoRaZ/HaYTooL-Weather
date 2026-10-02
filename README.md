@@ -5,6 +5,11 @@
   <p><em>Windows Sistem Tepsisi (Görev Çubuğu) Dinamik Hava Durumu Uygulaması</em></p>
 </div>
 
+<p align="center">
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Weather/latest/total?color=success&label=Latest%20Release%20Downloads" alt="Latest Release Downloads" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather/releases"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Weather/total?color=2ea44f&label=Total%20Downloads" alt="Total Downloads" /></a>
+</p>
+
 ---
 
 ## 🇬🇧 English Description
