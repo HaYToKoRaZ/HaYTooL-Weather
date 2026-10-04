@@ -63,3 +63,10 @@ export function initSimulator() {
   updateSimulatorClock();
   setInterval(updateSimulatorClock, 1000);
 }
+
+// Global window erişimi
+if (typeof window !== "undefined") {
+  window.initSimulator = initSimulator;
+  window.updateSimulator = updateSimulator;
+  window.updateSimulatorClock = updateSimulatorClock;
+}

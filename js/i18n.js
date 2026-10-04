@@ -39,7 +39,7 @@ export function setLanguage(lang) {
   });
 
   // Açılır listedeki aktif öğeyi güncelle
-  document.querySelectorAll(".lang-item").forEach(item => {
+  document.querySelectorAll(".dropdown-item[data-lang]").forEach(item => {
     item.classList.toggle("active", item.getAttribute("data-lang") === lang);
   });
 
@@ -65,23 +65,38 @@ export function initLanguageSelector() {
 
   langBtn.addEventListener("click", (e) => {
     e.stopPropagation();
+    // Diğer açık menü varsa kapat
+    const otherMenu = document.getElementById("themeDropdown");
+    if (otherMenu) otherMenu.classList.remove("show");
     langDropdown.classList.toggle("show");
   });
 
-  document.addEventListener("click", () => {
-    langDropdown.classList.remove("show");
+  document.addEventListener("click", (e) => {
+    if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+      langDropdown.classList.remove("show");
+    }
   });
 
-  document.querySelectorAll(".lang-item").forEach(item => {
-    item.addEventListener("click", (e) => {
+  langDropdown.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const item = e.target.closest(".dropdown-item[data-lang]");
+    if (item) {
       e.preventDefault();
       const lang = item.getAttribute("data-lang");
-      setLanguage(lang);
-      langDropdown.classList.remove("show");
-    });
+      if (lang) {
+        setLanguage(lang);
+        langDropdown.classList.remove("show");
+      }
+    }
   });
 
   // Kayıtlı dili veya varsayılan Türkçeyi yükle
   const savedLang = localStorage.getItem("haytool_weather_lang") || "tr";
   setLanguage(savedLang);
+}
+
+// Global window erişimi (inline tıklamalar ve her ortam için kesintisiz çalışma garantisi)
+if (typeof window !== "undefined") {
+  window.setLanguage = setLanguage;
+  window.currentLang = currentLang;
 }

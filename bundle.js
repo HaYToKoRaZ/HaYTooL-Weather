@@ -2,7 +2,7 @@
  * HaYTooL Weather Website - Çeviri ve Dil Veritabanı (7 Dil)
  * Diller: tr, en, es, de, pt, ar, ru
  */
-export const translations = {
+const translations = {
   tr: {
     hero_badge: "🐱 Sevimli Kedi Temalı & Ultra Hafif Masaüstü Asistanı",
     hero_title: "Windows Sistem Tepsisinde Dinamik Hava Durumu",
@@ -260,4 +260,449 @@ export const translations = {
 // Global window erişimi (her ortamda kesintisiz çalışma garantisi)
 if (typeof window !== "undefined") {
   window.translations = translations;
+}
+
+
+
+
+const langConfigs = {
+  tr: { flag: "https://flagcdn.com/w20/tr.png", text: "TR" },
+  en: { flag: "https://flagcdn.com/w20/gb.png", text: "EN" },
+  es: { flag: "https://flagcdn.com/w20/es.png", text: "ES" },
+  de: { flag: "https://flagcdn.com/w20/de.png", text: "DE" },
+  pt: { flag: "https://flagcdn.com/w20/pt.png", text: "PT" },
+  ar: { flag: "https://flagcdn.com/w20/sa.png", text: "AR" },
+  ru: { flag: "https://flagcdn.com/w20/ru.png", text: "RU" }
+};
+
+let currentLang = "tr";
+
+/**
+ * Aktif arayüz dilini ve RTL/LTR yönünü günceller.
+ * @param {string} lang - tr, en, es, de, pt, ar, ru
+ */
+function setLanguage(lang) {
+  if (!translations[lang]) return;
+  currentLang = lang;
+
+  // RTL/LTR Yönetimi (Arapça için RTL)
+  if (lang === "ar") {
+    document.documentElement.setAttribute("dir", "rtl");
+    document.documentElement.setAttribute("lang", "ar");
+  } else {
+    document.documentElement.setAttribute("dir", "ltr");
+    document.documentElement.setAttribute("lang", lang);
+  }
+
+  // Metin içeriklerini data-i18n anahtarlarına göre güncelle
+  const langData = translations[lang];
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (langData[key]) {
+      el.textContent = langData[key];
+    }
+  });
+
+  // Açılır listedeki aktif öğeyi güncelle
+  document.querySelectorAll(".dropdown-item[data-lang]").forEach(item => {
+    item.classList.toggle("active", item.getAttribute("data-lang") === lang);
+  });
+
+  // Seçili butonun bayrağını ve metnini güncelle
+  const config = langConfigs[lang] || langConfigs.tr;
+  const currentFlagEl = document.getElementById("currentLangFlag");
+  if (currentFlagEl) currentFlagEl.src = config.flag;
+  
+  const currentTextEl = document.getElementById("currentLangText");
+  if (currentTextEl) currentTextEl.textContent = config.text;
+
+  localStorage.setItem("haytool_weather_lang", lang);
+}
+
+/**
+ * Dil seçici açılır menüsünü ve tıklama dinleyicilerini başlatır.
+ */
+function initLanguageSelector() {
+  const langBtn = document.getElementById("langBtn");
+  const langDropdown = document.getElementById("langDropdown");
+
+  if (!langBtn || !langDropdown) return;
+
+  langBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    // Diğer açık menü varsa kapat
+    const otherMenu = document.getElementById("themeDropdown");
+    if (otherMenu) otherMenu.classList.remove("show");
+    langDropdown.classList.toggle("show");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+      langDropdown.classList.remove("show");
+    }
+  });
+
+  langDropdown.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const item = e.target.closest(".dropdown-item[data-lang]");
+    if (item) {
+      e.preventDefault();
+      const lang = item.getAttribute("data-lang");
+      if (lang) {
+        setLanguage(lang);
+        langDropdown.classList.remove("show");
+      }
+    }
+  });
+
+  // Kayıtlı dili veya varsayılan Türkçeyi yükle
+  const savedLang = localStorage.getItem("haytool_weather_lang") || "tr";
+  setLanguage(savedLang);
+}
+
+// Global window erişimi (inline tıklamalar ve her ortam için kesintisiz çalışma garantisi)
+if (typeof window !== "undefined") {
+  window.setLanguage = setLanguage;
+  window.currentLang = currentLang;
+}
+
+
+/**
+ * HaYTooL Weather - Theme Factory Türkiye Şehir Temaları (10 Tema)
+ * UI/UX Pro Max ve Theme Factory standartlarına uygun tasarım belirteçleri.
+ */
+const cityThemes = {
+  istanbul: {
+    id: "istanbul",
+    name: "İstanbul (Boğaz Mavisi)",
+    icon: "🌊",
+    primary: "#00b4f0",
+    accent: "#3a7bd5",
+    bgMain: "#0a0f1a",
+    bgCard: "rgba(18, 25, 42, 0.75)",
+    bgGlass: "rgba(255, 255, 255, 0.05)",
+    borderGlass: "rgba(0, 180, 240, 0.2)",
+    borderHover: "rgba(0, 210, 255, 0.6)",
+    glow: "0 10px 35px rgba(0, 180, 240, 0.25)",
+    gradient: "radial-gradient(circle at 15% 20%, rgba(58, 123, 213, 0.22) 0%, transparent 45%), radial-gradient(circle at 85% 60%, rgba(0, 180, 240, 0.15) 0%, transparent 40%)"
+  },
+  ankara: {
+    id: "ankara",
+    name: "Ankara (Bozkır Altını)",
+    icon: "🏛️",
+    primary: "#f59e0b",
+    accent: "#d97706",
+    bgMain: "#121317",
+    bgCard: "rgba(28, 30, 36, 0.8)",
+    bgGlass: "rgba(255, 255, 255, 0.04)",
+    borderGlass: "rgba(245, 158, 11, 0.2)",
+    borderHover: "rgba(245, 158, 11, 0.6)",
+    glow: "0 10px 35px rgba(245, 158, 11, 0.25)",
+    gradient: "radial-gradient(circle at 15% 20%, rgba(245, 158, 11, 0.18) 0%, transparent 45%), radial-gradient(circle at 85% 60%, rgba(217, 119, 6, 0.12) 0%, transparent 40%)"
+  },
+  izmir: {
+    id: "izmir",
+    name: "İzmir (Kordon Günbatımı)",
+    icon: "🌅",
+    primary: "#f97316",
+    accent: "#ec4899",
+    bgMain: "#160e14",
+    bgCard: "rgba(35, 20, 30, 0.8)",
+    bgGlass: "rgba(255, 255, 255, 0.05)",
+    borderGlass: "rgba(249, 115, 22, 0.22)",
+    borderHover: "rgba(236, 72, 153, 0.6)",
+    glow: "0 10px 35px rgba(249, 115, 22, 0.25)",
+    gradient: "radial-gradient(circle at 15% 20%, rgba(249, 115, 22, 0.2) 0%, transparent 45%), radial-gradient(circle at 85% 60%, rgba(236, 72, 153, 0.18) 0%, transparent 40%)"
+  },
+  antalya: {
+    id: "antalya",
+    name: "Antalya (Akdeniz Turkuazı)",
+    icon: "🌴",
+    primary: "#14b8a6",
+    accent: "#06b6d4",
+    bgMain: "#091417",
+    bgCard: "rgba(15, 33, 38, 0.8)",
+    bgGlass: "rgba(255, 255, 255, 0.05)",
+    borderGlass: "rgba(20, 184, 166, 0.2)",
+    borderHover: "rgba(6, 182, 212, 0.6)",
+    glow: "0 10px 35px rgba(20, 184, 166, 0.25)",
+    gradient: "radial-gradient(circle at 15% 20%, rgba(20, 184, 166, 0.2) 0%, transparent 45%), radial-gradient(circle at 85% 60%, rgba(6, 182, 212, 0.16) 0%, transparent 40%)"
+  },
+  bursa: {
+    id: "bursa",
+    name: "Bursa (Yeşil Çam & Uludağ)",
+    icon: "🌲",
+    primary: "#22c55e",
+    accent: "#10b981",
+    bgMain: "#0a140f",
+    bgCard: "rgba(18, 34, 26, 0.8)",
+    bgGlass: "rgba(255, 255, 255, 0.04)",
+    borderGlass: "rgba(34, 197, 94, 0.2)",
+    borderHover: "rgba(16, 185, 129, 0.6)",
+    glow: "0 10px 35px rgba(34, 197, 94, 0.25)",
+    gradient: "radial-gradient(circle at 15% 20%, rgba(34, 197, 94, 0.18) 0%, transparent 45%), radial-gradient(circle at 85% 60%, rgba(16, 185, 129, 0.15) 0%, transparent 40%)"
+  },
+  trabzon: {
+    id: "trabzon",
+    name: "Trabzon (Karadeniz Yaylası)",
+    icon: "⛰️",
+    primary: "#0d9488",
+    accent: "#4ade80",
+    bgMain: "#0a1616",
+    bgCard: "rgba(16, 36, 35, 0.8)",
+    bgGlass: "rgba(255, 255, 255, 0.05)",
+    borderGlass: "rgba(13, 148, 136, 0.22)",
+    borderHover: "rgba(74, 222, 128, 0.6)",
+    glow: "0 10px 35px rgba(13, 148, 136, 0.25)",
+    gradient: "radial-gradient(circle at 15% 20%, rgba(13, 148, 136, 0.2) 0%, transparent 45%), radial-gradient(circle at 85% 60%, rgba(74, 222, 128, 0.14) 0%, transparent 40%)"
+  },
+  nevsehir: {
+    id: "nevsehir",
+    name: "Kapadokya (Peri Bacaları)",
+    icon: "🎈",
+    primary: "#f43f5e",
+    accent: "#fb923c",
+    bgMain: "#180f12",
+    bgCard: "rgba(38, 22, 27, 0.8)",
+    bgGlass: "rgba(255, 255, 255, 0.05)",
+    borderGlass: "rgba(244, 63, 94, 0.2)",
+    borderHover: "rgba(251, 146, 60, 0.6)",
+    glow: "0 10px 35px rgba(244, 63, 94, 0.25)",
+    gradient: "radial-gradient(circle at 15% 20%, rgba(244, 63, 94, 0.2) 0%, transparent 45%), radial-gradient(circle at 85% 60%, rgba(251, 146, 60, 0.16) 0%, transparent 40%)"
+  },
+  erzurum: {
+    id: "erzurum",
+    name: "Erzurum (Palandöken Kristali)",
+    icon: "❄️",
+    primary: "#38bdf8",
+    accent: "#93c5fd",
+    bgMain: "#0c121c",
+    bgCard: "rgba(20, 29, 44, 0.8)",
+    bgGlass: "rgba(255, 255, 255, 0.05)",
+    borderGlass: "rgba(56, 189, 248, 0.22)",
+    borderHover: "rgba(147, 197, 253, 0.6)",
+    glow: "0 10px 35px rgba(56, 189, 248, 0.25)",
+    gradient: "radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.22) 0%, transparent 45%), radial-gradient(circle at 85% 60%, rgba(147, 197, 253, 0.18) 0%, transparent 40%)"
+  },
+  gaziantep: {
+    id: "gaziantep",
+    name: "Gaziantep (Antep Fıstığı & Bakır)",
+    icon: "✨",
+    primary: "#a3e635",
+    accent: "#d97706",
+    bgMain: "#13120c",
+    bgCard: "rgba(32, 30, 18, 0.8)",
+    bgGlass: "rgba(255, 255, 255, 0.04)",
+    borderGlass: "rgba(163, 230, 53, 0.2)",
+    borderHover: "rgba(217, 119, 6, 0.6)",
+    glow: "0 10px 35px rgba(163, 230, 53, 0.25)",
+    gradient: "radial-gradient(circle at 15% 20%, rgba(163, 230, 53, 0.18) 0%, transparent 45%), radial-gradient(circle at 85% 60%, rgba(217, 119, 6, 0.15) 0%, transparent 40%)"
+  },
+  mugla: {
+    id: "mugla",
+    name: "Muğla (Gökova Samanyolu)",
+    icon: "🌌",
+    primary: "#a855f7",
+    accent: "#818cf8",
+    bgMain: "#0f0c1a",
+    bgCard: "rgba(25, 20, 44, 0.8)",
+    bgGlass: "rgba(255, 255, 255, 0.05)",
+    borderGlass: "rgba(168, 85, 247, 0.22)",
+    borderHover: "rgba(129, 140, 248, 0.6)",
+    glow: "0 10px 35px rgba(168, 85, 247, 0.25)",
+    gradient: "radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.2) 0%, transparent 45%), radial-gradient(circle at 85% 60%, rgba(129, 140, 248, 0.16) 0%, transparent 40%)"
+  }
+};
+
+/**
+ * Belirtilen temayı CSS değişkenlerine uygular ve tarayıcıda saklar.
+ * @param {string} themeId 
+ */
+function applyCityTheme(themeId) {
+  const theme = cityThemes[themeId] || cityThemes.istanbul;
+  const root = document.documentElement;
+
+  root.style.setProperty("--bg-main", theme.bgMain);
+  root.style.setProperty("--bg-card", theme.bgCard);
+  root.style.setProperty("--bg-glass", theme.bgGlass);
+  root.style.setProperty("--border-glass", theme.borderGlass);
+  root.style.setProperty("--border-hover", theme.borderHover);
+  root.style.setProperty("--accent-cyan", theme.primary);
+  root.style.setProperty("--accent-blue", theme.accent);
+  root.style.setProperty("--shadow-glow", theme.glow);
+
+  document.body.style.backgroundImage = theme.gradient;
+
+  // Açılır liste veya arayüz durumunu güncelle
+  document.querySelectorAll(".dropdown-item[data-theme]").forEach(item => {
+    item.classList.toggle("active", item.getAttribute("data-theme") === theme.id);
+  });
+
+  // Showcase vitrin kartlarının aktiflik durumunu güncelle
+  document.querySelectorAll(".theme-card-btn").forEach(card => {
+    card.classList.toggle("active", card.getAttribute("data-theme") === theme.id);
+  });
+
+  const curThemeLabel = document.getElementById("currentThemeLabel");
+  if (curThemeLabel) {
+    curThemeLabel.textContent = `${theme.icon} ${theme.name}`;
+  }
+
+  // Görev Çubuğu Simülatöründeki tepsi ikonu arka planını da aktif şehir temasıyla canlandır
+  const trayPair = document.getElementById("simTrayIconPair");
+  if (trayPair) {
+    trayPair.style.borderColor = theme.primary;
+    trayPair.style.boxShadow = `0 0 14px ${theme.primary}55`;
+  }
+
+  localStorage.setItem("haytool_weather_theme", theme.id);
+}
+
+/**
+ * Tema seçici arayüzünü başlatır.
+ */
+function initThemeSelector() {
+  const themeBtn = document.getElementById("themeBtn");
+  const themeDropdown = document.getElementById("themeDropdown");
+
+  if (themeBtn && themeDropdown) {
+    themeBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      // Diğer açık menü varsa kapat
+      const otherMenu = document.getElementById("langDropdown");
+      if (otherMenu) otherMenu.classList.remove("show");
+      themeDropdown.classList.toggle("show");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!themeBtn.contains(e.target) && !themeDropdown.contains(e.target)) {
+        themeDropdown.classList.remove("show");
+      }
+    });
+
+    themeDropdown.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const item = e.target.closest(".dropdown-item[data-theme]");
+      if (item) {
+        e.preventDefault();
+        const themeId = item.getAttribute("data-theme");
+        if (themeId) {
+          applyCityTheme(themeId);
+          themeDropdown.classList.remove("show");
+        }
+      }
+    });
+  }
+
+  // Showcase vitrin kartlarına tıklama desteği
+  document.querySelectorAll(".theme-card-btn").forEach(card => {
+    card.addEventListener("click", () => {
+      const themeId = card.getAttribute("data-theme");
+      applyCityTheme(themeId);
+    });
+  });
+
+  // Kayıtlı veya varsayılan İstanbul temasını uygula
+  const savedTheme = localStorage.getItem("haytool_weather_theme") || "istanbul";
+  applyCityTheme(savedTheme);
+}
+
+// Global window erişimi (inline tıklamalar ve her ortam için kesintisiz çalışma garantisi)
+if (typeof window !== "undefined") {
+  window.applyCityTheme = applyCityTheme;
+  window.cityThemes = cityThemes;
+}
+
+
+
+const weatherDataMap = {
+  sunny: { icon: "☀️", temp: "24°", label: "Sunny / Güneşli" },
+  cloudy: { icon: "⛅", temp: "19°", label: "Partly Cloudy / Parçalı Bulutlu" },
+  rainy: { icon: "🌧️", temp: "14°", label: "Rainy / Yağmurlu" },
+  snowy: { icon: "❄️", temp: "-2°", label: "Snowy / Karlı" },
+  storm: { icon: "⛈️", temp: "17°", label: "Thunderstorm / Fırtına" }
+};
+
+/**
+ * Görev çubuğu simülasyonundaki ikon, derece ve boyutları günceller.
+ */
+function updateSimulator() {
+  const weatherTypeSelect = document.getElementById("simWeatherSelect");
+  const iconScaleInput = document.getElementById("simIconScale");
+  const textScaleInput = document.getElementById("simTextScale");
+
+  if (!weatherTypeSelect || !iconScaleInput || !textScaleInput) return;
+
+  const weatherType = weatherTypeSelect.value;
+  const iconScale = iconScaleInput.value;
+  const textScale = textScaleInput.value;
+
+  const data = weatherDataMap[weatherType] || weatherDataMap.sunny;
+  const iconEl = document.getElementById("simTrayIcon");
+  const tempEl = document.getElementById("simTrayTemp");
+
+  if (iconEl) {
+    iconEl.textContent = data.icon;
+    iconEl.style.transform = `scale(${iconScale / 100})`;
+  }
+
+  if (tempEl) {
+    tempEl.textContent = data.temp;
+    tempEl.style.fontSize = `${(textScale / 100) * 1.15}rem`;
+  }
+}
+
+/**
+ * Görev çubuğunda canlı saati ve tarihi günceller.
+ */
+function updateSimulatorClock() {
+  const clockEl = document.getElementById("simClock");
+  if (!clockEl) return;
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const dateStr = now.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' });
+  clockEl.innerHTML = `${timeStr}<br>${dateStr}`;
+}
+
+/**
+ * Görev çubuğu simülatör olay dinleyicilerini başlatır.
+ */
+function initSimulator() {
+  const weatherSelect = document.getElementById("simWeatherSelect");
+  const iconScale = document.getElementById("simIconScale");
+  const textScale = document.getElementById("simTextScale");
+
+  if (weatherSelect) weatherSelect.addEventListener("change", updateSimulator);
+  if (iconScale) iconScale.addEventListener("input", updateSimulator);
+  if (textScale) textScale.addEventListener("input", updateSimulator);
+
+  updateSimulator();
+  updateSimulatorClock();
+  setInterval(updateSimulatorClock, 1000);
+}
+
+// Global window erişimi
+if (typeof window !== "undefined") {
+  window.initSimulator = initSimulator;
+  window.updateSimulator = updateSimulator;
+  window.updateSimulatorClock = updateSimulatorClock;
+}
+
+
+
+// Otomatik Başlatıcı (Modüler veya Klasik Script Desteği)
+function startAppBundle() {
+  try {
+    if (typeof initLanguageSelector === 'function') initLanguageSelector();
+    if (typeof initThemeSelector === 'function') initThemeSelector();
+    if (typeof initSimulator === 'function') initSimulator();
+  } catch (err) {
+    console.error('HaYTooL Weather init error:', err);
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startAppBundle);
+} else {
+  startAppBundle();
 }

@@ -8,11 +8,21 @@
 
 import { initLanguageSelector } from "./js/i18n.js";
 import { initSimulator } from "./js/simulator.js";
+import { initThemeSelector } from "./js/theme.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-  // 1. Çoklu dil modülünü başlat
-  initLanguageSelector();
+function startApp() {
+  try {
+    initLanguageSelector();
+    initThemeSelector();
+    initSimulator();
+  } catch (err) {
+    console.error("HaYTooL Weather init error:", err);
+  }
+}
 
-  // 2. İnteraktif görev çubuğu simülatörünü başlat
-  initSimulator();
-});
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startApp);
+} else {
+  startApp();
+}
+

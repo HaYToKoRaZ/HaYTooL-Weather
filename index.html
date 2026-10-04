@@ -3,63 +3,167 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HaYTooL Weather — Dynamic Weather Application for Windows System Tray</title>
-  <meta name="description" content="Ultra-lightweight, customizable Windows notification area live weather app by HaYTo. Multi-language, cute cat companion, and portable.">
+  <title>HaYTooL Weather — Windows Sistem Tepsisinde Dinamik & Canlı Hava Durumu</title>
+  <meta name="description" content="Windows bildirim alanı (sistem tepsisi) için ultra hafif, taşınabilir (portable), kedi maskotlu ve 5 hava tahmin modelli canlı hava durumu uygulaması. Sıfır telemetri, %100 gizlilik ve açık kaynak.">
+  <meta name="keywords" content="haytool weather, windows hava durumu, sistem tepsisi hava durumu, tray weather app, portable weather, açık kaynak hava durumu, ecmwf, mgm meteoroloji, lightweight windows weather">
+  <meta name="author" content="HaYTo">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://haytokoraz.github.io/HaYTooL-Weather/">
   <link rel="icon" type="image/png" href="assets/logo.png">
-  
-  <!-- Google Fonts Outfit -->
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://haytokoraz.github.io/HaYTooL-Weather/">
+  <meta property="og:title" content="HaYTooL Weather — Windows Sistem Tepsisi İçin Dinamik Hava Durumu">
+  <meta property="og:description" content="Windows saatinin yanında sessizce çalışan, anlık sıcaklık ve durumu yüksek çözünürlükle çizen ultra hafif masaüstü hava durumu aracı.">
+  <meta property="og:image" content="https://haytokoraz.github.io/HaYTooL-Weather/assets/weather_cat.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@HaYTo">
+  <meta name="twitter:title" content="HaYTooL Weather — Windows Sistem Tepsisinde Canlı Hava Durumu">
+  <meta name="twitter:description" content="Kedi maskotlu, 5 tahmin modelleri destekli, tüy kadar hafif açık kaynak Windows masaüstü uygulaması.">
+  <meta name="twitter:image" content="https://haytokoraz.github.io/HaYTooL-Weather/assets/weather_cat.jpg">
+
+  <meta name="theme-color" content="#07090e">
+  <link rel="alternate" hreflang="tr" href="https://haytokoraz.github.io/HaYTooL-Weather/">
+  <link rel="alternate" hreflang="en" href="https://haytokoraz.github.io/HaYTooL-Weather/">
+  <link rel="alternate" hreflang="es" href="https://haytokoraz.github.io/HaYTooL-Weather/">
+  <link rel="alternate" hreflang="de" href="https://haytokoraz.github.io/HaYTooL-Weather/">
+  <link rel="alternate" hreflang="pt" href="https://haytokoraz.github.io/HaYTooL-Weather/">
+  <link rel="alternate" hreflang="ar" href="https://haytokoraz.github.io/HaYTooL-Weather/">
+  <link rel="alternate" hreflang="ru" href="https://haytokoraz.github.io/HaYTooL-Weather/">
+  <link rel="alternate" hreflang="x-default" href="https://haytokoraz.github.io/HaYTooL-Weather/">
+
+  <!-- Schema.org Knowledge Graph (SoftwareApplication, WebSite, Person, E-E-A-T & GEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://haytokoraz.github.io/HaYTooL-Weather/#software",
+        "name": "HaYTooL Weather",
+        "operatingSystem": "Windows 10, Windows 11",
+        "applicationCategory": "WeatherApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Ultra-lightweight Windows system tray dynamic weather companion with dual tray icons, MGM/ECMWF forecasts, 10 Turkey city themes, zero telemetry, and portable design.",
+        "softwareVersion": "4.1",
+        "license": "https://opensource.org/licenses/MIT",
+        "author": {
+          "@type": "Person",
+          "@id": "https://haytokoraz.github.io/#author",
+          "name": "HaYTo",
+          "url": "https://haytokoraz.github.io/"
+        },
+        "downloadUrl": "https://github.com/HaYToKoRaZ/HaYTooL-Weather/releases",
+        "featureList": [
+          "Dual System Tray Icons for temperature and weather condition",
+          "5 Weather Forecast Models (MGM, ECMWF, GFS, DWD, Auto AI)",
+          "10 Turkish City Themes inspired by Theme Factory",
+          "7 Language Support with 1-click capitals",
+          "Zero Telemetry & 100% Privacy Friendly",
+          "Portable single EXE with INI storage"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://haytokoraz.github.io/HaYTooL-Weather/#website",
+        "url": "https://haytokoraz.github.io/HaYTooL-Weather/",
+        "name": "HaYTooL Weather",
+        "description": "Windows bildirim alanı için canlı, sevimli kedi maskotlu ve ultra hafif dinamik hava durumu tanıtım portalı.",
+        "inLanguage": ["tr", "en", "es", "de", "pt", "ar", "ru"],
+        "publisher": {
+          "@id": "https://haytokoraz.github.io/#author"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Ambient background elements -->
-  <div class="ambient-decor floating-cloud">☁️</div>
-  <div class="ambient-decor floating-sun">☀️</div>
+  <!-- Ambient background mesh light orbs -->
+  <div class="bg-mesh">
+    <div class="mesh-blob blob-1"></div>
+    <div class="mesh-blob blob-2"></div>
+    <div class="mesh-blob blob-3"></div>
+  </div>
 
-  <!-- Navbar -->
+  <!-- Modern Navigation Bar -->
   <header class="navbar">
     <div class="container nav-container">
       <a href="#" class="logo-wrap">
         <img src="assets/logo.png" alt="HaYTooL Weather Logo" class="brand-logo">
-        <span class="brand-name">HaYTooL Weather</span>
+        <div class="brand-text">
+          <span class="brand-name">HaYTooL Weather</span>
+          <span class="brand-badge">Desktop Tray Suite</span>
+        </div>
       </a>
 
       <div class="nav-right">
-        <!-- 7 Language Selector -->
+        <!-- Theme Factory: Türkiye Şehir Temaları Seçici -->
+        <div class="theme-selector">
+          <button class="nav-control-btn" id="themeBtn" aria-label="Şehir Teması Seç">
+            <span id="currentThemeLabel">🌊 İstanbul (Boğaz Mavisi)</span>
+            <span>▼</span>
+          </button>
+          <div class="dropdown-menu" id="themeDropdown">
+            <a class="dropdown-item" data-theme="istanbul"><span>🌊 İstanbul</span><span class="theme-preview-dot" style="background: #00b4f0;"></span></a>
+            <a class="dropdown-item" data-theme="ankara"><span>🏛️ Ankara</span><span class="theme-preview-dot" style="background: #f59e0b;"></span></a>
+            <a class="dropdown-item" data-theme="izmir"><span>🌅 İzmir</span><span class="theme-preview-dot" style="background: #f97316;"></span></a>
+            <a class="dropdown-item" data-theme="antalya"><span>🌴 Antalya</span><span class="theme-preview-dot" style="background: #14b8a6;"></span></a>
+            <a class="dropdown-item" data-theme="bursa"><span>🌲 Bursa</span><span class="theme-preview-dot" style="background: #22c55e;"></span></a>
+            <a class="dropdown-item" data-theme="trabzon"><span>⛰️ Trabzon</span><span class="theme-preview-dot" style="background: #0d9488;"></span></a>
+            <a class="dropdown-item" data-theme="nevsehir"><span>🎈 Kapadokya</span><span class="theme-preview-dot" style="background: #f43f5e;"></span></a>
+            <a class="dropdown-item" data-theme="erzurum"><span>❄️ Erzurum</span><span class="theme-preview-dot" style="background: #38bdf8;"></span></a>
+            <a class="dropdown-item" data-theme="gaziantep"><span>✨ Gaziantep</span><span class="theme-preview-dot" style="background: #a3e635;"></span></a>
+            <a class="dropdown-item" data-theme="mugla"><span>🌌 Muğla</span><span class="theme-preview-dot" style="background: #a855f7;"></span></a>
+          </div>
+        </div>
+
+        <!-- 7 Dil Seçici -->
         <div class="lang-selector">
-          <button class="lang-btn" id="langBtn">
+          <button class="nav-control-btn" id="langBtn" aria-label="Dil Seçimi">
             <img id="currentLangFlag" src="https://flagcdn.com/w20/tr.png" alt="TR" class="flag-icon">
             <span id="currentLangText">TR</span>
-            <span class="arrow-icon">▼</span>
+            <span>▼</span>
           </button>
-          <div class="lang-dropdown" id="langDropdown">
-            <a class="lang-item" data-lang="tr"><img src="https://flagcdn.com/w20/tr.png" alt="TR" class="flag-icon"> Türkçe</a>
-            <a class="lang-item" data-lang="en"><img src="https://flagcdn.com/w20/gb.png" alt="EN" class="flag-icon"> English</a>
-            <a class="lang-item" data-lang="es"><img src="https://flagcdn.com/w20/es.png" alt="ES" class="flag-icon"> Español</a>
-            <a class="lang-item" data-lang="de"><img src="https://flagcdn.com/w20/de.png" alt="DE" class="flag-icon"> Deutsch</a>
-            <a class="lang-item" data-lang="pt"><img src="https://flagcdn.com/w20/pt.png" alt="PT" class="flag-icon"> Português</a>
-            <a class="lang-item" data-lang="ar"><img src="https://flagcdn.com/w20/sa.png" alt="AR" class="flag-icon"> العربية</a>
-            <a class="lang-item" data-lang="ru"><img src="https://flagcdn.com/w20/ru.png" alt="RU" class="flag-icon"> Русский</a>
+          <div class="dropdown-menu" id="langDropdown">
+            <a class="dropdown-item" data-lang="tr"><img src="https://flagcdn.com/w20/tr.png" alt="TR" class="flag-icon"> Türkçe</a>
+            <a class="dropdown-item" data-lang="en"><img src="https://flagcdn.com/w20/gb.png" alt="EN" class="flag-icon"> English</a>
+            <a class="dropdown-item" data-lang="es"><img src="https://flagcdn.com/w20/es.png" alt="ES" class="flag-icon"> Español</a>
+            <a class="dropdown-item" data-lang="de"><img src="https://flagcdn.com/w20/de.png" alt="DE" class="flag-icon"> Deutsch</a>
+            <a class="dropdown-item" data-lang="pt"><img src="https://flagcdn.com/w20/pt.png" alt="PT" class="flag-icon"> Português</a>
+            <a class="dropdown-item" data-lang="ar"><img src="https://flagcdn.com/w20/sa.png" alt="AR" class="flag-icon"> العربية</a>
+            <a class="dropdown-item" data-lang="ru"><img src="https://flagcdn.com/w20/ru.png" alt="RU" class="flag-icon"> Русский</a>
           </div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero Bölümü -->
   <main>
     <section class="hero">
       <div class="container hero-grid">
-        <div class="hero-text">
-          <div class="hero-badge" data-i18n="hero_badge">
+        <div class="hero-left">
+          <div class="hero-tag" data-i18n="hero_badge">
             🐱 Sevimli Kedi Temalı & Ultra Hafif Masaüstü Asistanı
           </div>
           <h1 class="hero-title" data-i18n="hero_title">
-            Windows Sistem Tepsisinde Dinamik Hava Durumu
+            Windows Sistem Tepsisinde <span class="gradient-text">Dinamik Hava Durumu</span>
           </h1>
           <p class="hero-desc" data-i18n="hero_desc">
             HaYTooL Weather, Windows bildirim alanında (saatin yanında) sessizce yaşayan, anlık sıcaklık ve hava durumunu dinamik simgelerle çizen tüy kadar hafif açık kaynaklı masaüstü uygulamasıdır.
@@ -67,7 +171,7 @@
 
           <div class="hero-actions">
             <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather/releases" target="_blank" class="btn btn-primary" data-i18n="btn_download">
-              📥 İndir (Portable)
+              📥 İndir (Portable EXE)
             </a>
             <a href="https://github.com/HaYToKoRaZ/HaYTooL-Weather" target="_blank" class="btn btn-secondary" data-i18n="btn_github">
               🐙 GitHub Deposu
@@ -76,56 +180,81 @@
               🌐 HaYTooL PoRTaL
             </a>
           </div>
+
+          <!-- Hero Metrics -->
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-val">&lt; 15 MB</span>
+              <span class="stat-lbl">Sıfır RAM Tüketimi</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val">5 Model</span>
+              <span class="stat-lbl">MGM / ECMWF / GFS</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val">10 Şehir</span>
+              <span class="stat-lbl">Canlı Temalar</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val">%100</span>
+              <span class="stat-lbl">Gizlilik & Yerel .INI</span>
+            </div>
+          </div>
         </div>
 
-        <!-- Mascot Visual -->
+        <!-- Mascot Hero Card -->
         <div class="hero-visual">
-          <div class="mascot-container">
-            <img src="assets/weather_cat.jpg" alt="HaYTooL Weather Cute Cat Mascot" class="mascot-img">
-            <div class="floating-badge badge-temp" data-i18n="badge_temp">
-              🌡️ Canlı Çift Tepsi Alanı
-            </div>
-            <div class="floating-badge badge-light" data-i18n="badge_light">
-              🪶 Sıfır Yük & Yüksek Performans
+          <div class="mascot-card glass-panel">
+            <img src="assets/weather_cat.jpg" alt="HaYTooL Weather Maskotu">
+            <div class="mascot-overlay">
+              <div class="floating-glass-pill" data-i18n="badge_temp">
+                🌡️ Çift Tepsi Alanı
+              </div>
+              <div class="floating-glass-pill" data-i18n="badge_light">
+                🪶 Sıfır Yük (Zero Bloat)
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Taskbar Simulation Section -->
+    <!-- İnteraktif Windows Görev Çubuğu Simülatörü -->
     <section class="simulator-section">
       <div class="container">
-        <h2 class="section-title" data-i18n="sim_title">Canlı Görev Çubuğu Simülatörü</h2>
-        <p class="section-subtitle" data-i18n="sim_subtitle">
-          Uygulamayı indirmeden önce Windows görev çubuğunuzda nasıl görüneceğini test edin!
-        </p>
+        <div class="section-head">
+          <h2 class="section-title" data-i18n="sim_title">Canlı Görev Çubuğu Simülatörü</h2>
+          <p class="section-desc" data-i18n="sim_subtitle">
+            Uygulamayı indirmeden önce Windows görev çubuğunuzda nasıl görüneceğini gerçek zamanlı test edin!
+          </p>
+        </div>
 
-        <div class="simulator-box">
-          <!-- Windows Taskbar Mock -->
-          <div class="taskbar-simulation">
-            <div class="taskbar-left">
-              <span>🪟 Start</span>
-              <span>🔍 Ara</span>
-              <span>📁 Dosyalar</span>
+        <div class="simulator-wrapper glass-panel">
+          <div class="windows-desktop-frame">
+            <div class="desktop-content-mock">
+              <span>🖥️ Windows 11 Masaüstü Alanı (Canlı Önizleme)</span>
             </div>
-
-            <div class="taskbar-tray">
-              <!-- Live tray weather icons -->
-              <div class="tray-icon-pair" id="simTrayIconPair">
-                <span class="tray-weather-icon" id="simTrayIcon">☀️</span>
-                <span class="tray-weather-temp" id="simTrayTemp">24°</span>
+            <div class="taskbar-mock">
+              <div class="taskbar-start-group">
+                <span>🪟 Başlat</span>
+                <span>🔍 Ara</span>
+                <span>📁 Gezgin</span>
               </div>
-              <div class="taskbar-clock" id="simClock">
-                18:30<br>03.09.2026
+              <div class="taskbar-tray-area">
+                <div class="sim-tray-badge" id="simTrayIconPair">
+                  <span class="sim-weather-icon" id="simTrayIcon">☀️</span>
+                  <span class="sim-temp-text" id="simTrayTemp">24°</span>
+                </div>
+                <div class="taskbar-clock-area" id="simClock">
+                  18:30<br>04.10.2026
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Controls -->
-          <div class="sim-controls">
-            <div class="control-group">
-              <label data-i18n="sim_weather_type">Hava Durumu:</label>
+          <div class="sim-controls-grid">
+            <div class="sim-ctrl-item">
+              <label data-i18n="sim_weather_type">Hava Durumu Senaryosu:</label>
               <select id="simWeatherSelect">
                 <option value="sunny">Güneşli (Sunny)</option>
                 <option value="cloudy">Bulutlu (Cloudy)</option>
@@ -134,13 +263,11 @@
                 <option value="storm">Fırtınalı (Thunderstorm)</option>
               </select>
             </div>
-
-            <div class="control-group">
+            <div class="sim-ctrl-item">
               <label data-i18n="sim_icon_size">İkon Boyutu (%40 - %200):</label>
               <input type="range" id="simIconScale" min="40" max="200" value="100">
             </div>
-
-            <div class="control-group">
+            <div class="sim-ctrl-item">
               <label data-i18n="sim_text_size">Sıcaklık Boyutu (%40 - %200):</label>
               <input type="range" id="simTextScale" min="40" max="200" value="100">
             </div>
@@ -149,47 +276,213 @@
       </div>
     </section>
 
-    <!-- Key Features Section -->
+    <!-- Theme Factory: 10 Türkiye Şehir Teması Showcase -->
+    <section class="theme-showcase-section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title" data-i18n="theme_showcase_title">🎨 10 Türkiye Şehir Teması (Theme Factory)</h2>
+          <p class="section-desc" data-i18n="theme_showcase_subtitle">
+            Her temayı tek tıkla deneyin! Masaüstü uygulaması ve web sitesi aynı paletlerle senkronize çalışır.
+          </p>
+        </div>
+
+        <div class="themes-grid">
+          <button class="theme-card-btn" data-theme="istanbul">
+            <div class="theme-header">
+              <div class="theme-badge-icon" style="background: #00b4f0;">🌊</div>
+              <div class="theme-titles">
+                <h4>İstanbul</h4>
+                <p>Boğaz Mavisi</p>
+              </div>
+            </div>
+            <div class="theme-swatches">
+              <span style="background: #00b4f0;"></span>
+              <span style="background: #3a7bd5;"></span>
+              <span style="background: #0a0f1a;"></span>
+            </div>
+          </button>
+
+          <button class="theme-card-btn" data-theme="ankara">
+            <div class="theme-header">
+              <div class="theme-badge-icon" style="background: #f59e0b;">🏛️</div>
+              <div class="theme-titles">
+                <h4>Ankara</h4>
+                <p>Bozkır Altını</p>
+              </div>
+            </div>
+            <div class="theme-swatches">
+              <span style="background: #f59e0b;"></span>
+              <span style="background: #d97706;"></span>
+              <span style="background: #121317;"></span>
+            </div>
+          </button>
+
+          <button class="theme-card-btn" data-theme="izmir">
+            <div class="theme-header">
+              <div class="theme-badge-icon" style="background: #f97316;">🌅</div>
+              <div class="theme-titles">
+                <h4>İzmir</h4>
+                <p>Kordon Günbatımı</p>
+              </div>
+            </div>
+            <div class="theme-swatches">
+              <span style="background: #f97316;"></span>
+              <span style="background: #ec4899;"></span>
+              <span style="background: #160e14;"></span>
+            </div>
+          </button>
+
+          <button class="theme-card-btn" data-theme="antalya">
+            <div class="theme-header">
+              <div class="theme-badge-icon" style="background: #14b8a6;">🌴</div>
+              <div class="theme-titles">
+                <h4>Antalya</h4>
+                <p>Akdeniz Turkuazı</p>
+              </div>
+            </div>
+            <div class="theme-swatches">
+              <span style="background: #14b8a6;"></span>
+              <span style="background: #06b6d4;"></span>
+              <span style="background: #091417;"></span>
+            </div>
+          </button>
+
+          <button class="theme-card-btn" data-theme="bursa">
+            <div class="theme-header">
+              <div class="theme-badge-icon" style="background: #22c55e;">🌲</div>
+              <div class="theme-titles">
+                <h4>Bursa</h4>
+                <p>Yeşil Çam & Uludağ</p>
+              </div>
+            </div>
+            <div class="theme-swatches">
+              <span style="background: #22c55e;"></span>
+              <span style="background: #10b981;"></span>
+              <span style="background: #0a140f;"></span>
+            </div>
+          </button>
+
+          <button class="theme-card-btn" data-theme="trabzon">
+            <div class="theme-header">
+              <div class="theme-badge-icon" style="background: #0d9488;">⛰️</div>
+              <div class="theme-titles">
+                <h4>Trabzon</h4>
+                <p>Karadeniz Yaylası</p>
+              </div>
+            </div>
+            <div class="theme-swatches">
+              <span style="background: #0d9488;"></span>
+              <span style="background: #4ade80;"></span>
+              <span style="background: #0a1616;"></span>
+            </div>
+          </button>
+
+          <button class="theme-card-btn" data-theme="nevsehir">
+            <div class="theme-header">
+              <div class="theme-badge-icon" style="background: #f43f5e;">🎈</div>
+              <div class="theme-titles">
+                <h4>Kapadokya</h4>
+                <p>Peri Bacaları</p>
+              </div>
+            </div>
+            <div class="theme-swatches">
+              <span style="background: #f43f5e;"></span>
+              <span style="background: #fb923c;"></span>
+              <span style="background: #180f12;"></span>
+            </div>
+          </button>
+
+          <button class="theme-card-btn" data-theme="erzurum">
+            <div class="theme-header">
+              <div class="theme-badge-icon" style="background: #38bdf8;">❄️</div>
+              <div class="theme-titles">
+                <h4>Erzurum</h4>
+                <p>Palandöken Kristali</p>
+              </div>
+            </div>
+            <div class="theme-swatches">
+              <span style="background: #38bdf8;"></span>
+              <span style="background: #93c5fd;"></span>
+              <span style="background: #0c121c;"></span>
+            </div>
+          </button>
+
+          <button class="theme-card-btn" data-theme="gaziantep">
+            <div class="theme-header">
+              <div class="theme-badge-icon" style="background: #a3e635;">✨</div>
+              <div class="theme-titles">
+                <h4>Gaziantep</h4>
+                <p>Antep Fıstığı & Bakır</p>
+              </div>
+            </div>
+            <div class="theme-swatches">
+              <span style="background: #a3e635;"></span>
+              <span style="background: #d97706;"></span>
+              <span style="background: #13120c;"></span>
+            </div>
+          </button>
+
+          <button class="theme-card-btn" data-theme="mugla">
+            <div class="theme-header">
+              <div class="theme-badge-icon" style="background: #a855f7;">🌌</div>
+              <div class="theme-titles">
+                <h4>Muğla</h4>
+                <p>Gökova Samanyolu</p>
+              </div>
+            </div>
+            <div class="theme-swatches">
+              <span style="background: #a855f7;"></span>
+              <span style="background: #818cf8;"></span>
+              <span style="background: #0f0c1a;"></span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Özellikler Bölümü -->
     <section class="features-section">
       <div class="container">
-        <h2 class="section-title" data-i18n="feat_title">Öne Çıkan Özellikler</h2>
-        <p class="section-subtitle" data-i18n="feat_subtitle">
-          Windows için özel olarak tasarlanmış tüy kadar hafif hava durumu gücü
-        </p>
+        <div class="section-head">
+          <h2 class="section-title" data-i18n="feat_title">Öne Çıkan Özellikler</h2>
+          <p class="section-desc" data-i18n="feat_subtitle">
+            Windows için özel olarak tasarlanmış tüy kadar hafif hava durumu gücü
+          </p>
+        </div>
 
         <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">✨</div>
+          <div class="feature-box glass-panel">
+            <div class="feature-icon-wrapper">✨</div>
             <h3 data-i18n="feat_1_title">Dinamik Çift Tepsi İkonu</h3>
             <p data-i18n="feat_1_desc">Windows saatinin hemen solunda yüksek çözünürlüklü hava ikonu ve büyük sıcaklık rakamları yan yana yer alır.</p>
           </div>
 
-          <div class="feature-card">
-            <div class="feature-icon">📡</div>
+          <div class="feature-box glass-panel">
+            <div class="feature-icon-wrapper">📡</div>
             <h3 data-i18n="feat_2_title">5 Farklı Hava Tahmin Modeli</h3>
             <p data-i18n="feat_2_desc">MGM (Resmi Türkiye Meteorolojisi), ECMWF, GFS, DWD ve Otomatik Yapay Zeka destekli sağlayıcı desteği.</p>
           </div>
 
-          <div class="feature-card">
-            <div class="feature-icon">🎨</div>
+          <div class="feature-box glass-panel">
+            <div class="feature-icon-wrapper">🎨</div>
             <h3 data-i18n="feat_3_title">Canlı Önizleme & %40-%200 Ölçek</h3>
             <p data-i18n="feat_3_desc">İster minik ister devasa; simge ve derece boyutunu, arka plan renk ve opaklığını zevkinize göre özelleştirin.</p>
           </div>
 
-          <div class="feature-card">
-            <div class="feature-icon">📦</div>
+          <div class="feature-box glass-panel">
+            <div class="feature-icon-wrapper">📦</div>
             <h3 data-i18n="feat_4_title">Taşınabilir (Portable) & .INI Yapısı</h3>
             <p data-i18n="feat_4_desc">Kurulum gerekmez. Tek parça .exe çalışır ve tüm ayarlarını yanındaki HaYTooLWeather.ini dosyasında saklar.</p>
           </div>
 
-          <div class="feature-card">
-            <div class="feature-icon">🌍</div>
+          <div class="feature-box glass-panel">
+            <div class="feature-icon-wrapper">🌍</div>
             <h3 data-i18n="feat_5_title">7 Dil & Tek Tıkla Başkentler</h3>
             <p data-i18n="feat_5_desc">Türkçe, İngilizce, İspanyolca, Almanca, Portekizce, Arapça ve Rusça arayüz. 7 dilin başkenti tek tıkla seçilebilir.</p>
           </div>
 
-          <div class="feature-card">
-            <div class="feature-icon">🛡️</div>
+          <div class="feature-box glass-panel">
+            <div class="feature-icon-wrapper">🛡️</div>
             <h3 data-i18n="feat_6_title">100% Gizlilik & Sıfır Telemetri</h3>
             <p data-i18n="feat_6_desc">Hiçbir kullanıcı verisi, konum veya alışkanlık toplanmaz. Tamamen açık kaynak ve MIT lisanslıdır.</p>
           </div>
@@ -197,9 +490,9 @@
       </div>
     </section>
 
-    <!-- Portal Ecosystem Banner -->
+    <!-- Portal Ekosistem Bannerı -->
     <section class="container">
-      <div class="portal-banner">
+      <div class="portal-banner glass-panel">
         <h2 data-i18n="portal_title">HaYTooL Ekosistemini Keşfedin</h2>
         <p data-i18n="portal_desc">
           HaYTo tarafından geliştirilen tüm hafif, modern ve üretkenlik artıran masaüstü araçlarına tek tıkla ulaşın.
@@ -213,7 +506,7 @@
 
   <!-- Footer -->
   <footer>
-    <div class="container">
+    <div class="container footer-content">
       <p data-i18n="footer_desc">HaYTooL Weather — Geliştirici: HaYTo. Açık kaynak kodlu ve ücretsizdir.</p>
       <div class="footer-links">
         <a href="https://haytokoraz.github.io/" target="_blank">HaYTooL PoRTaL</a>
@@ -221,13 +514,14 @@
         <a href="mailto:korazhayto@gmail.com">korazhayto@gmail.com</a>
         <a href="https://x.com/HaYTo" target="_blank">X (Twitter)</a>
       </div>
-      <p style="font-size: 0.8rem; color: var(--text-muted);" data-i18n="footer_privacy">
+      <p class="footer-badge" data-i18n="footer_privacy">
         Gizlilik Dostu | Telemetrisiz | MIT Lisansı
       </p>
     </div>
   </footer>
 
-  <script type="module" src="app.js"></script>
+  <!-- Evrensel ve Kesintisiz Script Paketi (Local file:// ve Web Sunucuları için Tam Uyumlu) -->
+  <script src="bundle.js"></script>
 
   <!-- HaYTooL Pulse Canlı Ziyaretçi Sayacı Nabzı -->
   <script>
@@ -267,4 +561,3 @@
   </script>
 </body>
 </html>
-
