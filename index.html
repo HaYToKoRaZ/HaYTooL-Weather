@@ -97,10 +97,14 @@
   }
   </script>
 
-  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <!-- Performance Preconnect & Preloads for Fonts & CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+  </noscript>
   
   <link rel="stylesheet" href="style.css">
 </head>
@@ -117,7 +121,10 @@
   <header class="navbar">
     <div class="container nav-container">
       <a href="#" class="logo-wrap" title="HaYTooL Weather - Ana Sayfa">
-        <img src="assets/logo.png" alt="HaYTooL Weather Logo" class="brand-logo" width="44" height="44" loading="eager" fetchpriority="high">
+        <picture>
+          <source srcset="assets/logo.webp" type="image/webp">
+          <img src="assets/logo.png" alt="HaYTooL Weather Logo" class="brand-logo" width="44" height="44" loading="eager" fetchpriority="high">
+        </picture>
         <div class="brand-text">
           <span class="brand-name">HaYTooL Weather</span>
           <span class="brand-badge">Desktop Tray Suite</span>
@@ -217,7 +224,10 @@
         <!-- Mascot Hero Card -->
         <div class="hero-visual">
           <div class="mascot-card glass-panel">
-            <img src="assets/weather_cat.jpg" alt="HaYTooL Weather Maskotu" width="420" height="440" loading="lazy">
+            <picture>
+              <source srcset="assets/weather_cat.webp" type="image/webp">
+              <img src="assets/weather_cat.jpg" alt="HaYTooL Weather Maskotu" width="420" height="440" loading="lazy" decoding="async">
+            </picture>
             <div class="mascot-overlay">
               <div class="floating-glass-pill" data-i18n="badge_temp">
                 🌡️ Çift Tepsi Alanı
