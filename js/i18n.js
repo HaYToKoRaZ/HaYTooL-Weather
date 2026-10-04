@@ -1,13 +1,13 @@
 import { translations } from "./translations.js";
 
 const langConfigs = {
-  tr: { flag: "https://flagcdn.com/w20/tr.png", text: "TR" },
-  en: { flag: "https://flagcdn.com/w20/gb.png", text: "EN" },
-  es: { flag: "https://flagcdn.com/w20/es.png", text: "ES" },
-  de: { flag: "https://flagcdn.com/w20/de.png", text: "DE" },
-  pt: { flag: "https://flagcdn.com/w20/pt.png", text: "PT" },
-  ar: { flag: "https://flagcdn.com/w20/sa.png", text: "AR" },
-  ru: { flag: "https://flagcdn.com/w20/ru.png", text: "RU" }
+  tr: { flag: "assets/flags/tr.png", text: "TR" },
+  en: { flag: "assets/flags/gb.png", text: "EN" },
+  es: { flag: "assets/flags/es.png", text: "ES" },
+  de: { flag: "assets/flags/de.png", text: "DE" },
+  pt: { flag: "assets/flags/pt.png", text: "PT" },
+  ar: { flag: "assets/flags/sa.png", text: "AR" },
+  ru: { flag: "assets/flags/ru.png", text: "RU" }
 };
 
 let currentLang = "tr";
