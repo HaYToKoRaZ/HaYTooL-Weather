@@ -25,7 +25,7 @@ public class WeatherCardForm : Form
         FormBorderStyle = FormBorderStyle.None;
         StartPosition = FormStartPosition.Manual;
         ShowInTaskbar = false;
-        Size = new Size(390, 500);
+        Size = new Size(410, 550);
         BackColor = theme.Background;
         ForeColor = theme.Text;
         DoubleBuffered = true;
@@ -64,7 +64,7 @@ public class WeatherCardForm : Form
             Font = new Font("Segoe UI", 12f, FontStyle.Bold),
             ForeColor = Color.White,
             AutoSize = false,
-            Size = new Size(210, 24),
+            Size = new Size(230, 24),
             Location = new Point(16, 14)
         };
 
@@ -74,7 +74,7 @@ public class WeatherCardForm : Form
             Font = new Font("Segoe UI", 8.5f, FontStyle.Regular),
             ForeColor = Color.FromArgb(150, 160, 175),
             AutoSize = false,
-            Size = new Size(210, 18),
+            Size = new Size(230, 18),
             Location = new Point(18, 38)
         };
 
@@ -83,7 +83,7 @@ public class WeatherCardForm : Form
         {
             Text = "🌐",
             Size = new Size(32, 32),
-            Location = new Point(260, 14),
+            Location = new Point(285, 14),
             FlatStyle = FlatStyle.Flat,
             BackColor = Color.FromArgb(35, 42, 56),
             ForeColor = Color.FromArgb(0, 200, 255),
@@ -108,7 +108,7 @@ public class WeatherCardForm : Form
         {
             Text = "🔄",
             Size = new Size(32, 32),
-            Location = new Point(300, 14),
+            Location = new Point(325, 14),
             FlatStyle = FlatStyle.Flat,
             BackColor = Color.FromArgb(40, 45, 56),
             ForeColor = Color.White,
@@ -124,7 +124,7 @@ public class WeatherCardForm : Form
         {
             Text = "✕",
             Size = new Size(32, 32),
-            Location = new Point(340, 14),
+            Location = new Point(365, 14),
             FlatStyle = FlatStyle.Flat,
             BackColor = Color.FromArgb(40, 45, 56),
             ForeColor = Color.FromArgb(180, 190, 205),
@@ -217,7 +217,7 @@ public class WeatherCardForm : Form
             Text = "💧 Yağış",
             Font = new Font("Segoe UI", 8f, FontStyle.Bold),
             ForeColor = Color.FromArgb(80, 190, 255),
-            Location = new Point(220, 5),
+            Location = new Point(245, 5),
             AutoSize = true
         };
 
@@ -226,18 +226,18 @@ public class WeatherCardForm : Form
             Text = "🌡️ Sıcaklık",
             Font = new Font("Segoe UI", 8f, FontStyle.Bold),
             ForeColor = Color.FromArgb(220, 230, 245),
-            Location = new Point(290, 5),
+            Location = new Point(320, 5),
             AutoSize = true
         };
 
         pnlForecastHeader.Controls.AddRange(new Control[] { lblTitleLeft, lblLegendRain, lblLegendTemp });
 
-        // 5. 7 Günlük Tahmin Listesi
+        // 5. 7 Günlük Tahmin Listesi (AutoScroll kapalı, tam sığar!)
         var pnlDaily = new Panel
         {
             Dock = DockStyle.Fill,
             Padding = new Padding(16, 4, 16, 12),
-            AutoScroll = true
+            AutoScroll = false
         };
 
         int itemY = 4;
@@ -249,7 +249,7 @@ public class WeatherCardForm : Form
             itemY += 34;
         }
 
-        // Panelleri Forma Ekle (Footer kaldırıldı!)
+        // Panelleri Forma Ekle
         Controls.Add(pnlDaily);
         Controls.Add(pnlForecastHeader);
         Controls.Add(pnlMetrics);
@@ -261,7 +261,7 @@ public class WeatherCardForm : Form
     {
         var pnl = new Panel
         {
-            Size = new Size(114, 56),
+            Size = new Size(122, 56),
             Margin = new Padding(2),
             BackColor = Color.FromArgb(35, 39, 48)
         };
@@ -294,7 +294,7 @@ public class WeatherCardForm : Form
     {
         var row = new Panel
         {
-            Size = new Size(345, 30),
+            Size = new Size(376, 30),
             BackColor = Color.Transparent
         };
 
@@ -306,7 +306,7 @@ public class WeatherCardForm : Form
             Text = dayName,
             Font = new Font("Segoe UI", 9.5f, isToday ? FontStyle.Bold : FontStyle.Regular),
             ForeColor = isToday ? Color.FromArgb(0, 190, 255) : Color.White,
-            Size = new Size(68, 26),
+            Size = new Size(74, 26),
             Location = new Point(4, 3),
             TextAlign = ContentAlignment.MiddleLeft
         };
@@ -317,8 +317,8 @@ public class WeatherCardForm : Form
             Text = desc,
             Font = new Font("Segoe UI", 8.5f, FontStyle.Regular),
             ForeColor = Color.FromArgb(160, 175, 195),
-            Size = new Size(130, 26),
-            Location = new Point(76, 3),
+            Size = new Size(140, 26),
+            Location = new Point(82, 3),
             TextAlign = ContentAlignment.MiddleLeft
         };
 
@@ -329,8 +329,8 @@ public class WeatherCardForm : Form
             Text = rainText,
             Font = new Font("Segoe UI", 8.5f, FontStyle.Bold),
             ForeColor = daily.RainChance > 0 ? Color.FromArgb(80, 200, 255) : Color.FromArgb(100, 110, 130),
-            Size = new Size(55, 26),
-            Location = new Point(208, 3),
+            Size = new Size(60, 26),
+            Location = new Point(226, 3),
             TextAlign = ContentAlignment.MiddleRight
         };
 
@@ -340,8 +340,8 @@ public class WeatherCardForm : Form
             Text = $"{daily.MaxTemp:0}° / {daily.MinTemp:0}°",
             Font = new Font("Segoe UI", 9f, FontStyle.Bold),
             ForeColor = Color.White,
-            Size = new Size(72, 26),
-            Location = new Point(268, 3),
+            Size = new Size(80, 26),
+            Location = new Point(292, 3),
             TextAlign = ContentAlignment.MiddleRight
         };
 
