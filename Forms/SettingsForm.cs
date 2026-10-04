@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using Microsoft.Win32;
 using HaYTooLWeather.Models;
 using HaYTooLWeather.Services;
 
@@ -9,7 +8,7 @@ namespace HaYTooLWeather.Forms;
 
 /// <summary>
 /// HaYTooL Weather Kontrol Merkezi - Windows 11 Fluent 2 & Acrylic Dark Mimarisi.
-/// Tamamen sıfırdan tasarlanan modern kart tabanlı düzen, akrilik derinlik, 240px navigasyon ve kaydırmasız simetrik arayüz.
+/// Tamamen sıfırdan modern kart tabanlı düzen, akrilik derinlik, 240px navigasyon ve estetik simetrik arayüz.
 /// </summary>
 public class SettingsForm : Form
 {
@@ -89,8 +88,8 @@ public class SettingsForm : Form
         _onSettingsSaved = onSettingsSaved;
 
         Text = "HaYTooL Weather — " + LocalizationService.Get("settings_title");
-        Size = new Size(940, 690);
-        MinimumSize = new Size(940, 690);
+        Size = new Size(960, 710);
+        MinimumSize = new Size(960, 710);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         StartPosition = FormStartPosition.CenterScreen;
         MaximizeBox = false;
@@ -108,7 +107,7 @@ public class SettingsForm : Form
             Dock = DockStyle.Left,
             Width = 240,
             BackColor = ColorBgSidebar,
-            Padding = new Padding(14, 20, 14, 16)
+            Padding = new Padding(12, 16, 12, 16)
         };
         pnlSidebar.Paint += (s, e) =>
         {
@@ -120,7 +119,7 @@ public class SettingsForm : Form
         var pnlBrandHeader = new Panel
         {
             Dock = DockStyle.Top,
-            Height = 72,
+            Height = 76,
             BackColor = Color.Transparent,
             Padding = new Padding(6, 4, 6, 8)
         };
@@ -128,15 +127,15 @@ public class SettingsForm : Form
         var lblAppIcon = new Label
         {
             Text = "🌤️",
-            Location = new Point(2, 6),
-            Size = new Size(34, 34),
-            Font = new Font("Segoe UI Emoji", 16f)
+            Location = new Point(4, 8),
+            Size = new Size(36, 36),
+            Font = new Font("Segoe UI Emoji", 18f)
         };
 
         var lblLogoTitle = new Label
         {
             Text = "HaYTooL Weather",
-            Location = new Point(40, 6),
+            Location = new Point(44, 8),
             Size = new Size(168, 24),
             Font = new Font("Segoe UI", 12f, FontStyle.Bold),
             ForeColor = ColorTextPrimary
@@ -145,9 +144,9 @@ public class SettingsForm : Form
         var lblAppSubtitle = new Label
         {
             Text = "Windows Tray Companion",
-            Location = new Point(42, 30),
+            Location = new Point(46, 34),
             Size = new Size(166, 18),
-            Font = new Font("Segoe UI", 8f),
+            Font = new Font("Segoe UI", 8.5f),
             ForeColor = ColorAccentCyan
         };
 
@@ -157,7 +156,7 @@ public class SettingsForm : Form
         var pnlNavButtons = new Panel
         {
             Dock = DockStyle.Fill,
-            Padding = new Padding(0, 12, 0, 0)
+            Padding = new Padding(0, 10, 0, 0)
         };
 
         _btnTabLocation = CreateSidebarNavButton("📍  " + LocalizationService.Get("tab_location"));
@@ -185,7 +184,7 @@ public class SettingsForm : Form
         var pnlBottom = new Panel
         {
             Dock = DockStyle.Bottom,
-            Height = 56,
+            Height = 58,
             BackColor = Color.FromArgb(16, 20, 30),
             Padding = new Padding(24, 10, 24, 10)
         };
@@ -230,7 +229,7 @@ public class SettingsForm : Form
         {
             Dock = DockStyle.Fill,
             BackColor = ColorBgMica,
-            Padding = new Padding(26, 20, 26, 16)
+            Padding = new Padding(24, 18, 24, 16)
         };
 
         // Sekmeleri Sıfırdan İnşa Et
@@ -321,9 +320,9 @@ public class SettingsForm : Form
     // =========================================================================
     private void BuildLocationTab()
     {
-        _pnlLocationTab = new Panel { AutoScroll = true, BackColor = Color.Transparent, Padding = new Padding(0, 0, 10, 10) };
+        _pnlLocationTab = new Panel { AutoScroll = true, BackColor = Color.Transparent, Padding = new Padding(0, 0, 8, 8) };
         int y = 0;
-        int contentW = 636;
+        int contentW = 660;
 
         var lblHeader = new Label
         {
@@ -335,7 +334,7 @@ public class SettingsForm : Form
         };
         y += 36;
 
-        // 1. Aktif Konum Kartı (Hero Style Card)
+        // 1. Aktif Konum Kartı
         var pnlCurrentLoc = new Panel
         {
             Location = new Point(0, y),
@@ -358,7 +357,7 @@ public class SettingsForm : Form
         {
             Text = $"{WeatherService.FormatLocationTitle(_settings.City, _settings.District)}, {_settings.Country}",
             Location = new Point(16, 28),
-            Size = new Size(380, 32),
+            Size = new Size(400, 32),
             Font = new Font("Segoe UI", 13f, FontStyle.Bold),
             ForeColor = ColorTextPrimary
         };
@@ -376,7 +375,7 @@ public class SettingsForm : Form
         pnlCurrentLoc.Controls.AddRange(new Control[] { lblBadge, _lblCurrentLocationName, _lblCurrentLocationCoords });
         y += 88;
 
-        // 2. Hızlı Başkentler Seçici (Fluent Chips)
+        // 2. Hızlı Başkentler Seçici
         var lblQuick = new Label
         {
             Text = LocalizationService.Get("loc_popular"),
@@ -427,7 +426,7 @@ public class SettingsForm : Form
         }
         y += 48;
 
-        // 3. Arama Çubuğu (Search Container)
+        // 3. Arama Çubuğu
         var lblSearchTitle = new Label
         {
             Text = LocalizationService.Get("loc_search_title"),
@@ -481,20 +480,20 @@ public class SettingsForm : Form
         _lstSearchResults = new ListBox
         {
             Location = new Point(0, y),
-            Size = new Size(contentW, 136),
+            Size = new Size(contentW, 140),
             BackColor = ColorBgCard,
             ForeColor = ColorTextPrimary,
             BorderStyle = BorderStyle.None,
             Font = new Font("Segoe UI", 9.5f),
             ItemHeight = 28
         };
-        y += 144;
+        y += 148;
 
         var lblLocationStatus = new Label
         {
             Text = "",
             Location = new Point(0, y + 6),
-            Size = new Size(400, 24),
+            Size = new Size(420, 24),
             Font = new Font("Segoe UI", 9f, FontStyle.Bold),
             ForeColor = ColorEmerald
         };
@@ -633,7 +632,7 @@ public class SettingsForm : Form
     {
         _pnlAppearanceTab = new Panel { AutoScroll = false, BackColor = Color.Transparent };
         int y = 0;
-        int contentW = 636;
+        int contentW = 660;
 
         var lblHeader = new Label
         {
@@ -681,7 +680,7 @@ public class SettingsForm : Form
         var pnlSelectors = new Panel
         {
             Location = new Point(0, y),
-            Size = new Size(contentW, 72),
+            Size = new Size(contentW, 74),
             BackColor = ColorBgCard,
             Padding = new Padding(14, 10, 14, 10)
         };
@@ -715,7 +714,7 @@ public class SettingsForm : Form
         var lblTheme = new Label
         {
             Text = "🏙️ Şehir Teması:",
-            Location = new Point(14, 42),
+            Location = new Point(14, 43),
             Size = new Size(130, 22),
             Font = new Font("Segoe UI", 9f, FontStyle.Bold),
             ForeColor = ColorAccentCyan
@@ -723,7 +722,7 @@ public class SettingsForm : Form
 
         _cmbCityTheme = new ComboBox
         {
-            Location = new Point(145, 40),
+            Location = new Point(145, 41),
             Size = new Size(contentW - 165, 26),
             DropDownStyle = ComboBoxStyle.DropDownList,
             BackColor = ColorBgInput,
@@ -751,12 +750,12 @@ public class SettingsForm : Form
         };
 
         pnlSelectors.Controls.AddRange(new Control[] { lblMode, _cmbTrayMode, lblTheme, _cmbCityTheme });
-        y += 80;
+        y += 82;
 
-        // 3. YAN YANA 2 SÜTUN KARTLARI (Simetrik 311px + 14px Boşluk)
-        int colWidth = (contentW - 14) / 2; // 311px
+        // 3. YAN YANA 2 SÜTUN KARTLARI (Simetrik 323px + 14px Boşluk)
+        int colWidth = (contentW - 14) / 2; // 323px
         int colGap = 14;
-        int cardHeight = 310;
+        int cardHeight = 315;
 
         // SOL KART: HAVA DURUMU SİMGESİ
         var pnlWeather = new Panel
@@ -868,7 +867,7 @@ public class SettingsForm : Form
         using var fontClock = new Font("Segoe UI", 9f, FontStyle.Regular);
         using var brushClock = new SolidBrush(ColorTextSecondary);
         string timeStr = DateTime.Now.ToString("HH:mm");
-        g.DrawString(timeStr, fontClock, brushClock, 550, 8);
+        g.DrawString(timeStr, fontClock, brushClock, 570, 8);
 
         // Canlı Görev Çubuğu Simgeleri
         int temp = _weatherService.LastWeatherData != null ? (int)Math.Round(_weatherService.LastWeatherData.Temperature) : 24;
@@ -878,12 +877,12 @@ public class SettingsForm : Form
         var (wIcon, wHicon) = IconGenerator.GenerateWeatherOnlyIcon(weatherCode, isDay, _settings.WeatherIconScale, _settings.WeatherBgColor, _settings.WeatherBgOpacity);
         var (tIcon, tHicon) = IconGenerator.GenerateTemperatureOnlyIcon(temp, _settings.HighContrastTrayIcon, _settings.TempTextScale, _settings.TempBgColor, _settings.TempBgOpacity);
 
-        g.DrawIcon(wIcon, new Rectangle(465, 2, 30, 30));
-        g.DrawIcon(tIcon, new Rectangle(503, 2, 30, 30));
+        g.DrawIcon(wIcon, new Rectangle(485, 2, 30, 30));
+        g.DrawIcon(tIcon, new Rectangle(523, 2, 30, 30));
 
         using var fontLabel = new Font("Segoe UI", 8.5f, FontStyle.Italic);
         using var brushLabel = new SolidBrush(ColorTextMuted);
-        g.DrawString("Masaüstü Görev Çubuğu Önizlemesi ➔", fontLabel, brushLabel, 220, 9);
+        g.DrawString("Masaüstü Görev Çubuğu Önizlemesi ➔", fontLabel, brushLabel, 240, 9);
 
         wIcon.Dispose();
         tIcon.Dispose();
@@ -901,9 +900,9 @@ public class SettingsForm : Form
     // =========================================================================
     private void BuildGeneralTab()
     {
-        _pnlGeneralTab = new Panel { AutoScroll = true, BackColor = Color.Transparent, Padding = new Padding(0, 0, 10, 10) };
+        _pnlGeneralTab = new Panel { AutoScroll = true, BackColor = Color.Transparent, Padding = new Padding(0, 0, 8, 8) };
         int y = 0;
-        int contentW = 636;
+        int contentW = 660;
 
         var lblHeader = new Label
         {
@@ -1026,12 +1025,12 @@ public class SettingsForm : Form
     private void BuildLanguageTab()
     {
         if (_pnlLanguageTab == null)
-            _pnlLanguageTab = new Panel { AutoScroll = true, BackColor = Color.Transparent, Padding = new Padding(0, 0, 10, 10) };
+            _pnlLanguageTab = new Panel { AutoScroll = true, BackColor = Color.Transparent, Padding = new Padding(0, 0, 8, 8) };
         else
             _pnlLanguageTab.Controls.Clear();
 
         int y = 0;
-        int contentW = 636;
+        int contentW = 660;
 
         var lblHeader = new Label
         {
@@ -1092,9 +1091,9 @@ public class SettingsForm : Form
     // =========================================================================
     private void BuildAboutTab()
     {
-        _pnlAboutTab = new Panel { AutoScroll = true, BackColor = Color.Transparent, Padding = new Padding(0, 0, 10, 10) };
+        _pnlAboutTab = new Panel { AutoScroll = true, BackColor = Color.Transparent, Padding = new Padding(0, 0, 8, 8) };
         int y = 0;
-        int contentW = 636;
+        int contentW = 660;
 
         var lblHeader = new Label
         {
@@ -1109,7 +1108,7 @@ public class SettingsForm : Form
         var pnlAboutCard = new Panel
         {
             Location = new Point(0, y),
-            Size = new Size(contentW, 350),
+            Size = new Size(contentW, 360),
             BackColor = ColorBgCard,
             Padding = new Padding(24)
         };
@@ -1249,8 +1248,22 @@ public class SettingsForm : Form
 
     private static void DrawFluentCardBorder(Graphics g, Rectangle rect, Color borderColor)
     {
-        using var pen = new Pen(borderColor, 1);
-        g.DrawRectangle(pen, rect.X, rect.Y, rect.Width - 1, rect.Height - 1);
+        g.SmoothingMode = SmoothingMode.AntiAlias;
+        using var path = CreateRoundedRectanglePath(new Rectangle(rect.X, rect.Y, rect.Width - 1, rect.Height - 1), 8);
+        using var pen = new Pen(borderColor, 1.2f);
+        g.DrawPath(pen, path);
+    }
+
+    private static GraphicsPath CreateRoundedRectanglePath(Rectangle rect, int radius)
+    {
+        var path = new GraphicsPath();
+        int d = radius * 2;
+        path.AddArc(rect.X, rect.Y, d, d, 180, 90);
+        path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90);
+        path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);
+        path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
+        path.CloseFigure();
+        return path;
     }
 
     private static void OpenUrl(string url)

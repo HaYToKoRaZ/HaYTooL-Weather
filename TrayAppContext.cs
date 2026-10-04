@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using HaYTooLWeather.Forms;
 using HaYTooLWeather.Models;
@@ -133,10 +134,11 @@ public class TrayAppContext : ApplicationContext
             var weather = _weatherService.LastWeatherData;
             var desc = LocalizationService.GetWeatherDescription(weather.WeatherCode);
             var unit = _settings.TemperatureUnit.Equals("fahrenheit", StringComparison.OrdinalIgnoreCase) ? "°F" : "°C";
-            var itemHeader = new ToolStripMenuItem($"🌤️ {weather.LocationName}: {weather.Temperature:0}{unit} - {desc}")
+            var itemHeader = new ToolStripMenuItem($"🌤️  {weather.LocationName}: {weather.Temperature:0}{unit} • {desc}")
             {
-                Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
-                ForeColor = Color.FromArgb(0, 200, 255)
+                Font = new Font("Segoe UI", 10f, FontStyle.Bold),
+                ForeColor = Color.FromArgb(0, 210, 255),
+                Padding = new Padding(8, 6, 8, 6)
             };
             itemHeader.Click += (s, e) => ToggleWeatherCard();
             _contextMenu.Items.Add(itemHeader);
@@ -144,25 +146,39 @@ public class TrayAppContext : ApplicationContext
         }
 
         // 2. Şimdi Yenile
-        var itemRefresh = new ToolStripMenuItem("🔄 " + LocalizationService.Get("menu_refresh_now"));
+        var itemRefresh = new ToolStripMenuItem("🔄  " + LocalizationService.Get("menu_refresh_now"))
+        {
+            Font = new Font("Segoe UI", 9.5f, FontStyle.Regular),
+            Padding = new Padding(8, 5, 8, 5)
+        };
         itemRefresh.Click += async (s, e) => await RefreshWeatherAsync(silent: false);
         _contextMenu.Items.Add(itemRefresh);
 
         // 3. Ayarlar & Kontrol Merkezi
-        var itemSettings = new ToolStripMenuItem("⚙️ " + LocalizationService.Get("menu_settings"));
+        var itemSettings = new ToolStripMenuItem("⚙️  " + LocalizationService.Get("menu_settings"))
+        {
+            Font = new Font("Segoe UI", 9.5f, FontStyle.Regular),
+            Padding = new Padding(8, 5, 8, 5)
+        };
         itemSettings.Click += (s, e) => OpenControlCenter("location");
         _contextMenu.Items.Add(itemSettings);
 
         // 3.1. Hızlı Şehir Teması Alt Menüsü (Theme Factory Entegrasyonu)
         var activeTheme = ThemeFactory.GetTheme(_settings.Theme);
-        var itemThemeMenu = new ToolStripMenuItem($"🎨 Şehir Teması ({activeTheme.NameTr})");
+        var itemThemeMenu = new ToolStripMenuItem($"🎨  Şehir Teması ({activeTheme.NameTr})")
+        {
+            Font = new Font("Segoe UI", 9.5f, FontStyle.Regular),
+            Padding = new Padding(8, 5, 8, 5)
+        };
         foreach (var t in ThemeFactory.CityThemes)
         {
             var isCurrent = t.Id.Equals(_settings.Theme, StringComparison.OrdinalIgnoreCase);
-            var prefix = isCurrent ? "● " : "  ";
+            var prefix = isCurrent ? "● " : "   ";
             var themeOption = new ToolStripMenuItem($"{prefix}{t.NameTr}")
             {
-                ForeColor = isCurrent ? t.Primary : t.Text
+                ForeColor = isCurrent ? t.Primary : Color.FromArgb(220, 226, 236),
+                Font = new Font("Segoe UI", 9.5f, isCurrent ? FontStyle.Bold : FontStyle.Regular),
+                Padding = new Padding(8, 4, 8, 4)
             };
             var themeId = t.Id;
             themeOption.Click += (s, e) =>
@@ -184,13 +200,14 @@ public class TrayAppContext : ApplicationContext
 
         _contextMenu.Items.Add(new ToolStripSeparator());
 
-        // 4. Windows Başlangıcında Çalıştır (Net Görsel Durumlu & Anında Yenilenen)
+        // 4. Windows Başlangıcında Çalıştır
         var autoStartIcon = _settings.StartWithWindows ? "✅" : "⬜";
         var autoStartBadge = _settings.StartWithWindows ? LocalizationService.Get("status_on") : LocalizationService.Get("status_off");
-        var itemAutoStart = new ToolStripMenuItem($"{autoStartIcon} 🚀 {LocalizationService.Get("gen_autostart")}  {autoStartBadge}")
+        var itemAutoStart = new ToolStripMenuItem($"{autoStartIcon}  🚀 {LocalizationService.Get("gen_autostart")}  [{autoStartBadge}]")
         {
             Font = new Font("Segoe UI", 9.5f, FontStyle.Regular),
-            ForeColor = _settings.StartWithWindows ? Color.FromArgb(0, 230, 160) : Color.FromArgb(200, 215, 230)
+            ForeColor = _settings.StartWithWindows ? Color.FromArgb(52, 211, 153) : Color.FromArgb(180, 195, 215),
+            Padding = new Padding(8, 5, 8, 5)
         };
         itemAutoStart.Click += (s, e) =>
         {
@@ -204,7 +221,12 @@ public class TrayAppContext : ApplicationContext
         _contextMenu.Items.Add(new ToolStripSeparator());
 
         // 5. Çıkış
-        var itemExit = new ToolStripMenuItem("❌ " + LocalizationService.Get("menu_exit"));
+        var itemExit = new ToolStripMenuItem("❌  " + LocalizationService.Get("menu_exit"))
+        {
+            Font = new Font("Segoe UI", 9.5f, FontStyle.Regular),
+            ForeColor = Color.FromArgb(248, 113, 113),
+            Padding = new Padding(8, 5, 8, 5)
+        };
         itemExit.Click += (s, e) => ExitApplication();
         _contextMenu.Items.Add(itemExit);
     }
@@ -442,7 +464,8 @@ public class TrayAppContext : ApplicationContext
 }
 
 /// <summary>
-/// Sağ tık menüsü için seçili Türkiye Şehir Temasını yansıtan UI/UX Pro Max render edici.
+/// Sağ tık menüsü için Windows 11 Fluent 2 & Acrylic Dark Mimarisi Render Edici.
+/// Yuvarlatılmış pill hover efektleri, mikro-paddingler, yumuşak kenarlıklar ve yüksek kontrast.
 /// </summary>
 public class DarkMenuRenderer : ToolStripProfessionalRenderer
 {
@@ -453,19 +476,38 @@ public class DarkMenuRenderer : ToolStripProfessionalRenderer
         _getTheme = getTheme;
     }
 
+    protected override void OnRenderToolStripBackground(ToolStripRenderEventArgs e)
+    {
+        var theme = _getTheme();
+        using var brush = new SolidBrush(Color.FromArgb(24, 28, 38));
+        e.Graphics.FillRectangle(brush, e.AffectedBounds);
+    }
+
+    protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
+    {
+        var theme = _getTheme();
+        using var pen = new Pen(Color.FromArgb(50, 62, 84), 1);
+        e.Graphics.DrawRectangle(pen, 0, 0, e.AffectedBounds.Width - 1, e.AffectedBounds.Height - 1);
+    }
+
     protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
     {
         var theme = _getTheme();
-        if (!e.Item.Selected)
+        var g = e.Graphics;
+        g.SmoothingMode = SmoothingMode.AntiAlias;
+
+        if (e.Item.Selected)
         {
-            using var brush = new SolidBrush(theme.Surface);
-            e.Graphics.FillRectangle(brush, e.Item.ContentRectangle);
+            // Windows 11 Fluent 2 Pill Selection Effect
+            var rect = new Rectangle(4, 2, e.Item.Width - 8, e.Item.Height - 4);
+            using var path = CreateRoundedRectanglePath(rect, 6);
+            using var brush = new LinearGradientBrush(rect, theme.Primary, Color.FromArgb(Math.Min(255, theme.Primary.R + 25), Math.Min(255, theme.Primary.G + 25), Math.Min(255, theme.Primary.B + 25)), 45f);
+            g.FillPath(brush, path);
         }
         else
         {
-            // Seçili öğede tema Primary vurgusu
-            using var brush = new SolidBrush(theme.Primary);
-            e.Graphics.FillRectangle(brush, e.Item.ContentRectangle);
+            using var brush = new SolidBrush(Color.FromArgb(24, 28, 38));
+            g.FillRectangle(brush, e.Item.ContentRectangle);
         }
     }
 
@@ -482,9 +524,28 @@ public class DarkMenuRenderer : ToolStripProfessionalRenderer
         }
         else
         {
-            e.TextColor = theme.Text;
+            e.TextColor = Color.FromArgb(240, 244, 250);
         }
         base.OnRenderItemText(e);
+    }
+
+    protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
+    {
+        using var pen = new Pen(Color.FromArgb(45, 55, 75), 1);
+        int y = e.Item.Height / 2;
+        e.Graphics.DrawLine(pen, 12, y, e.Item.Width - 12, y);
+    }
+
+    private static GraphicsPath CreateRoundedRectanglePath(Rectangle rect, int radius)
+    {
+        var path = new GraphicsPath();
+        int d = radius * 2;
+        path.AddArc(rect.X, rect.Y, d, d, 180, 90);
+        path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90);
+        path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);
+        path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
+        path.CloseFigure();
+        return path;
     }
 }
 
@@ -497,13 +558,14 @@ public class CityThemeColorTable : ProfessionalColorTable
         _getTheme = getTheme;
     }
 
-    public override Color ToolStripDropDownBackground => _getTheme().Surface;
-    public override Color ImageMarginGradientBegin => _getTheme().Surface;
-    public override Color ImageMarginGradientMiddle => _getTheme().Surface;
-    public override Color ImageMarginGradientEnd => _getTheme().Surface;
-    public override Color MenuBorder => _getTheme().Primary;
+    public override Color ToolStripDropDownBackground => Color.FromArgb(24, 28, 38);
+    public override Color ImageMarginGradientBegin => Color.FromArgb(24, 28, 38);
+    public override Color ImageMarginGradientMiddle => Color.FromArgb(24, 28, 38);
+    public override Color ImageMarginGradientEnd => Color.FromArgb(24, 28, 38);
+    public override Color MenuBorder => Color.FromArgb(50, 62, 84);
     public override Color MenuItemBorder => Color.Transparent;
-    public override Color SeparatorDark => Color.FromArgb(70, _getTheme().Primary);
+    public override Color SeparatorDark => Color.FromArgb(45, 55, 75);
     public override Color SeparatorLight => Color.Transparent;
+    public override Color MenuItemSelected => _getTheme().Primary;
 }
 
