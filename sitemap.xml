@@ -6,13 +6,13 @@
     <lastmod>2026-10-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://haytokoraz.github.io/HaYTooL-Weather/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://haytokoraz.github.io/HaYTooL-Weather/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://haytokoraz.github.io/HaYTooL-Weather/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://haytokoraz.github.io/HaYTooL-Weather/"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://haytokoraz.github.io/HaYTooL-Weather/"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://haytokoraz.github.io/HaYTooL-Weather/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://haytokoraz.github.io/HaYTooL-Weather/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://haytokoraz.github.io/HaYTooL-Weather/?lang=tr"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://haytokoraz.github.io/HaYTooL-Weather/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://haytokoraz.github.io/HaYTooL-Weather/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://haytokoraz.github.io/HaYTooL-Weather/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://haytokoraz.github.io/HaYTooL-Weather/?lang=pt"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://haytokoraz.github.io/HaYTooL-Weather/?lang=ar"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://haytokoraz.github.io/HaYTooL-Weather/?lang=ru"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://haytokoraz.github.io/HaYTooL-Weather/"/>
   </url>
 </urlset>

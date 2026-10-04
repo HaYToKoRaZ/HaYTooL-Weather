@@ -355,9 +355,12 @@ function initLanguageSelector() {
     }
   });
 
-  // Kayıtlı dili veya varsayılan Türkçeyi yükle
-  const savedLang = localStorage.getItem("haytool_weather_lang") || "tr";
-  setLanguage(savedLang);
+  // URL ?lang= parametresi, kayıtlı dil veya varsayılan Türkçeyi yükle
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlLang = urlParams.get("lang");
+  const savedLang = localStorage.getItem("haytool_weather_lang");
+  const initialLang = (urlLang && langConfigs[urlLang]) ? urlLang : (savedLang || "tr");
+  setLanguage(initialLang);
 }
 
 // Global window erişimi (inline tıklamalar ve her ortam için kesintisiz çalışma garantisi)
