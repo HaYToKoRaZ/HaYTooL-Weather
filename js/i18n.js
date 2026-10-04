@@ -46,12 +46,21 @@ export function setLanguage(lang) {
   // Seçili butonun bayrağını ve metnini güncelle
   const config = langConfigs[lang] || langConfigs.tr;
   const currentFlagEl = document.getElementById("currentLangFlag");
-  if (currentFlagEl) currentFlagEl.src = config.flag;
-  
   const currentTextEl = document.getElementById("currentLangText");
   if (currentTextEl) currentTextEl.textContent = config.text;
 
   localStorage.setItem("haytool_weather_lang", lang);
+
+  // URL'deki ?lang= parametresini anında senkronize et (sayfa yenilenmeden)
+  if (typeof window !== "undefined" && window.history && window.location) {
+    try {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("lang") !== lang) {
+        url.searchParams.set("lang", lang);
+        window.history.replaceState({ lang }, "", url.toString());
+      }
+    } catch { }
+  }
 }
 
 /**
@@ -96,6 +105,15 @@ export function initLanguageSelector() {
   const savedLang = localStorage.getItem("haytool_weather_lang");
   const initialLang = (urlLang && langConfigs[urlLang]) ? urlLang : (savedLang || "tr");
   setLanguage(initialLang);
+
+  // Tarayıcı Geri/İleri butonlarına basıldığında dili otomatik senkronize et
+  window.addEventListener("popstate", () => {
+    const params = new URLSearchParams(window.location.search);
+    const pLang = params.get("lang");
+    if (pLang && langConfigs[pLang] && pLang !== currentLang) {
+      setLanguage(pLang);
+    }
+  });
 }
 
 // Global window erişimi (inline tıklamalar ve her ortam için kesintisiz çalışma garantisi)
