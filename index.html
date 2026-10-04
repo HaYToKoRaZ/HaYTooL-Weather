@@ -9,6 +9,9 @@
   <meta name="author" content="HaYTo">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://haytokoraz.github.io/HaYTooL-Weather/">
+  <link rel="icon" type="image/x-icon" href="https://haytokoraz.github.io/HaYTooL-Weather/favicon.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="https://haytokoraz.github.io/HaYTooL-Weather/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/HaYTooL-Weather/favicon.ico">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" href="assets/logo.png">
@@ -276,8 +279,8 @@
 
           <div class="sim-controls-grid">
             <div class="sim-ctrl-item">
-              <label data-i18n="sim_weather_type">Hava Durumu Senaryosu:</label>
-              <select id="simWeatherSelect">
+              <label for="simWeatherSelect" data-i18n="sim_weather_type">Hava Durumu Senaryosu:</label>
+              <select id="simWeatherSelect" name="simWeatherSelect" aria-label="Hava Durumu Senaryosu">
                 <option value="sunny">Güneşli (Sunny)</option>
                 <option value="cloudy">Bulutlu (Cloudy)</option>
                 <option value="rainy">Yağmurlu (Rainy)</option>
@@ -286,12 +289,12 @@
               </select>
             </div>
             <div class="sim-ctrl-item">
-              <label data-i18n="sim_icon_size">İkon Boyutu (%40 - %200):</label>
-              <input type="range" id="simIconScale" min="40" max="200" value="100">
+              <label for="simIconScale" data-i18n="sim_icon_size">İkon Boyutu (%40 - %200):</label>
+              <input type="range" id="simIconScale" name="simIconScale" min="40" max="200" value="100" aria-label="İkon Boyutu (%40 - %200)">
             </div>
             <div class="sim-ctrl-item">
-              <label data-i18n="sim_text_size">Sıcaklık Boyutu (%40 - %200):</label>
-              <input type="range" id="simTextScale" min="40" max="200" value="100">
+              <label for="simTextScale" data-i18n="sim_text_size">Sıcaklık Boyutu (%40 - %200):</label>
+              <input type="range" id="simTextScale" name="simTextScale" min="40" max="200" value="100" aria-label="Sıcaklık Boyutu (%40 - %200)">
             </div>
           </div>
         </div>
