@@ -7,7 +7,7 @@ public class AppSettings
 {
     // Genel Ayarlar
     public string Language { get; set; } = "tr"; // tr, en, es, de, pt, ar, ru
-    public string Theme { get; set; } = "auto"; // auto, dark, light
+    public string Theme { get; set; } = "istanbul"; // istanbul, ankara, izmir, antalya, bursa, trabzon, nevsehir, erzurum, gaziantep, mugla
     public bool StartWithWindows { get; set; } = false;
 
     // Hava Durumu ve Konum Ayarları

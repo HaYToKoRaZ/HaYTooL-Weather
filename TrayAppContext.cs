@@ -42,7 +42,7 @@ public class TrayAppContext : ApplicationContext
         // 3. Sağ Tık Menüsünü Hazırla
         _contextMenu = new ContextMenuStrip
         {
-            Renderer = new DarkMenuRenderer(),
+            Renderer = new DarkMenuRenderer(() => ThemeFactory.GetTheme(_settings.Theme)),
             ShowImageMargin = false
         };
 
@@ -152,6 +152,35 @@ public class TrayAppContext : ApplicationContext
         var itemSettings = new ToolStripMenuItem("⚙️ " + LocalizationService.Get("menu_settings"));
         itemSettings.Click += (s, e) => OpenControlCenter("location");
         _contextMenu.Items.Add(itemSettings);
+
+        // 3.1. Hızlı Şehir Teması Alt Menüsü (Theme Factory Entegrasyonu)
+        var activeTheme = ThemeFactory.GetTheme(_settings.Theme);
+        var itemThemeMenu = new ToolStripMenuItem($"🎨 Şehir Teması ({activeTheme.NameTr})");
+        foreach (var t in ThemeFactory.CityThemes)
+        {
+            var isCurrent = t.Id.Equals(_settings.Theme, StringComparison.OrdinalIgnoreCase);
+            var prefix = isCurrent ? "● " : "  ";
+            var themeOption = new ToolStripMenuItem($"{prefix}{t.NameTr}")
+            {
+                ForeColor = isCurrent ? t.Primary : t.Text
+            };
+            var themeId = t.Id;
+            themeOption.Click += (s, e) =>
+            {
+                _settings.Theme = themeId;
+                var th = ThemeFactory.GetTheme(themeId);
+                _settings.WeatherBgColor = IconGenerator.ColorToHex(th.Surface);
+                _settings.TempBgColor = IconGenerator.ColorToHex(th.CardBg);
+                ConfigManager.SaveSettings(_settings);
+                if (_weatherService.LastWeatherData != null)
+                {
+                    UpdateTrayDisplay(_weatherService.LastWeatherData);
+                }
+                RebuildContextMenu();
+            };
+            itemThemeMenu.DropDownItems.Add(themeOption);
+        }
+        _contextMenu.Items.Add(itemThemeMenu);
 
         _contextMenu.Items.Add(new ToolStripSeparator());
 
@@ -413,41 +442,68 @@ public class TrayAppContext : ApplicationContext
 }
 
 /// <summary>
-/// Sağ tık menüsü için koyu temalı zarif render edici.
+/// Sağ tık menüsü için seçili Türkiye Şehir Temasını yansıtan UI/UX Pro Max render edici.
 /// </summary>
 public class DarkMenuRenderer : ToolStripProfessionalRenderer
 {
-    public DarkMenuRenderer() : base(new DarkColorTable()) { }
+    private readonly Func<CityTheme> _getTheme;
+
+    public DarkMenuRenderer(Func<CityTheme> getTheme) : base(new CityThemeColorTable(getTheme))
+    {
+        _getTheme = getTheme;
+    }
 
     protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
     {
+        var theme = _getTheme();
         if (!e.Item.Selected)
         {
-            using var brush = new SolidBrush(Color.FromArgb(28, 31, 40));
+            using var brush = new SolidBrush(theme.Surface);
             e.Graphics.FillRectangle(brush, e.Item.ContentRectangle);
         }
         else
         {
-            using var brush = new SolidBrush(Color.FromArgb(0, 122, 255));
+            // Seçili öğede tema Primary vurgusu
+            using var brush = new SolidBrush(theme.Primary);
             e.Graphics.FillRectangle(brush, e.Item.ContentRectangle);
         }
     }
 
     protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
     {
-        e.TextColor = e.Item.Selected ? Color.White : (e.Item.Font?.Bold == true ? Color.FromArgb(0, 200, 255) : Color.FromArgb(225, 235, 245));
+        var theme = _getTheme();
+        if (e.Item.Selected)
+        {
+            e.TextColor = Color.White;
+        }
+        else if (e.Item.Font?.Bold == true)
+        {
+            e.TextColor = theme.Primary;
+        }
+        else
+        {
+            e.TextColor = theme.Text;
+        }
         base.OnRenderItemText(e);
     }
 }
 
-public class DarkColorTable : ProfessionalColorTable
+public class CityThemeColorTable : ProfessionalColorTable
 {
-    public override Color ToolStripDropDownBackground => Color.FromArgb(28, 31, 40);
-    public override Color ImageMarginGradientBegin => Color.FromArgb(28, 31, 40);
-    public override Color ImageMarginGradientMiddle => Color.FromArgb(28, 31, 40);
-    public override Color ImageMarginGradientEnd => Color.FromArgb(28, 31, 40);
-    public override Color MenuBorder => Color.FromArgb(50, 56, 72);
+    private readonly Func<CityTheme> _getTheme;
+
+    public CityThemeColorTable(Func<CityTheme> getTheme)
+    {
+        _getTheme = getTheme;
+    }
+
+    public override Color ToolStripDropDownBackground => _getTheme().Surface;
+    public override Color ImageMarginGradientBegin => _getTheme().Surface;
+    public override Color ImageMarginGradientMiddle => _getTheme().Surface;
+    public override Color ImageMarginGradientEnd => _getTheme().Surface;
+    public override Color MenuBorder => _getTheme().Primary;
     public override Color MenuItemBorder => Color.Transparent;
-    public override Color SeparatorDark => Color.FromArgb(50, 56, 72);
+    public override Color SeparatorDark => Color.FromArgb(70, _getTheme().Primary);
     public override Color SeparatorLight => Color.Transparent;
 }
+

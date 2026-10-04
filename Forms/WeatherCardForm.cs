@@ -21,12 +21,13 @@ public class WeatherCardForm : Form
         _settings = settings;
         _onRefreshRequested = onRefreshRequested;
 
+        var theme = ThemeFactory.GetTheme(settings.Theme);
         FormBorderStyle = FormBorderStyle.None;
         StartPosition = FormStartPosition.Manual;
         ShowInTaskbar = false;
         Size = new Size(390, 500);
-        BackColor = Color.FromArgb(24, 27, 34);
-        ForeColor = Color.White;
+        BackColor = theme.Background;
+        ForeColor = theme.Text;
         DoubleBuffered = true;
 
         // Dışarı tıklandığında veya ESC basıldığında kapat
@@ -351,8 +352,9 @@ public class WeatherCardForm : Form
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
-        // İnce ve estetik modern kenarlık
-        using var pen = new Pen(Color.FromArgb(60, 70, 85), 1.5f);
+        var theme = ThemeFactory.GetTheme(_settings.Theme);
+        // İnce ve estetik modern şehir teması kenarlığı
+        using var pen = new Pen(theme.Primary, 1.5f);
         e.Graphics.DrawRectangle(pen, 0, 0, Width - 1, Height - 1);
     }
 }

@@ -43,6 +43,7 @@ public class SettingsForm : Form
 
     // 2. Görünüm Sekmesi Kontrolleri
     private ComboBox? _cmbTrayMode;
+    private ComboBox? _cmbCityTheme;
     private TrackBar? _tbWeatherScale;
     private Label? _lblWeatherScaleVal;
     private Panel? _pnlWeatherColorPreview;
@@ -523,7 +524,31 @@ public class SettingsForm : Form
         _cmbTrayMode.Items.Add("🔹 Tek Alan Kompakt (Küçük İkon + Derece)");
         _cmbTrayMode.SelectedIndex = _settings.TrayDisplayMode.ToLowerInvariant() switch { "temp_only" => 1, "weather_only" => 2, "single_compact" => 3, _ => 0 };
         _cmbTrayMode.SelectedIndexChanged += (s, e) => ApplyLiveChanges();
-        y += 38;
+        y += 34;
+
+        // 2.1. Theme Factory: Türkiye Şehir Temaları Satırı
+        var lblTheme = new Label { Text = "🏙️ Şehir Teması:", Location = new Point(0, y + 4), Size = new Size(110, 24), Font = new Font("Segoe UI", 9f, FontStyle.Bold), ForeColor = Color.FromArgb(0, 210, 255) };
+        _cmbCityTheme = new ComboBox { Location = new Point(115, y), Size = new Size(475, 28), DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.FromArgb(32, 38, 52), ForeColor = Color.White, FlatStyle = FlatStyle.Flat };
+        foreach (var t in ThemeFactory.CityThemes)
+        {
+            _cmbCityTheme.Items.Add(t.NameTr);
+        }
+        int activeThemeIdx = ThemeFactory.CityThemes.FindIndex(t => t.Id.Equals(_settings.Theme, StringComparison.OrdinalIgnoreCase));
+        _cmbCityTheme.SelectedIndex = activeThemeIdx >= 0 ? activeThemeIdx : 0;
+        _cmbCityTheme.SelectedIndexChanged += (s, e) =>
+        {
+            if (_cmbCityTheme.SelectedIndex >= 0 && _cmbCityTheme.SelectedIndex < ThemeFactory.CityThemes.Count)
+            {
+                var selectedTheme = ThemeFactory.CityThemes[_cmbCityTheme.SelectedIndex];
+                _settings.Theme = selectedTheme.Id;
+                _settings.WeatherBgColor = IconGenerator.ColorToHex(selectedTheme.Surface);
+                _settings.TempBgColor = IconGenerator.ColorToHex(selectedTheme.CardBg);
+                if (_pnlWeatherColorPreview != null) _pnlWeatherColorPreview.BackColor = selectedTheme.Surface;
+                if (_pnlTempColorPreview != null) _pnlTempColorPreview.BackColor = selectedTheme.CardBg;
+                ApplyLiveChanges();
+            }
+        };
+        y += 34;
 
         // 3. YAN YANA 2 SÜTUN KARTLARI
         int colWidth = 288;
@@ -611,7 +636,7 @@ public class SettingsForm : Form
         grpTemp.Controls.AddRange(new Control[] { lblTScale, _lblTempScaleVal, _tbTempScale, lblTBg, _pnlTempColorPreview, btnTBgColor, lblTOp, _lblTempOpacityVal, _tbTempOpacity, _chkHighContrast });
 
         _pnlAppearanceTab.Controls.AddRange(new Control[] {
-            lblHeader, pnlPreviewBox, lblMode, _cmbTrayMode, grpWeather, grpTemp
+            lblHeader, pnlPreviewBox, lblMode, _cmbTrayMode, lblTheme, _cmbCityTheme, grpWeather, grpTemp
         });
     }
 
