@@ -9,7 +9,7 @@ public static class AppVersion
     /// <summary>
     /// Uygulama anlık sürüm numarası.
     /// </summary>
-    public const string Version = "v4.3";
+    public const string Version = "v4.4";
 
     /// <summary>
     /// Sadece sayısal/temiz sürüm (derleme ve paketleme için, örn: "4.0").
