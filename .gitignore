@@ -1,7 +1,11 @@
 # Yerel ve Gizli Klasörler (Local & Private)
+.agents/
+.codebase-memory/
+skills-lock.json
+*.7z
+*.zip
 0nogithub/
 websites/
-.codebase-memory/
 
 # Derleme ve Çıktı Dizinleri (Build & Dist)
 bin/
