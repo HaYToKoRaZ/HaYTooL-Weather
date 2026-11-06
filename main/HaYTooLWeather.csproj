@@ -9,11 +9,12 @@
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <AssemblyName>HaYTooLWeather</AssemblyName>
     <RootNamespace>HaYTooLWeather</RootNamespace>
-    <Version>4.4</Version>
+    <Version>4.5</Version>
     <Authors>HaYTo</Authors>
     <Company>HaYTooL</Company>
     <Product>HaYTooL Weather</Product>
     <Description>Windows System Tray Weather Application by HaYTo</Description>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ApplicationIcon>app.ico</ApplicationIcon>
     
     <!-- Release derlemede PDB dosyasını üretme (Temiz çıktı için) -->

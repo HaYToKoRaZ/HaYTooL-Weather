@@ -38,7 +38,7 @@ public static class UpdateService
         try
         {
             var apiUrl = $"https://api.github.com/repos/{RepoOwner}/{RepoName}/releases/latest";
-            var jsonStr = await HttpClient.GetStringAsync(apiUrl, cancellationToken);
+            var jsonStr = await HttpClient.GetStringAsync(apiUrl, cancellationToken).ConfigureAwait(false);
             using var doc = JsonDocument.Parse(jsonStr);
 
             var root = doc.RootElement;

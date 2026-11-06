@@ -62,7 +62,7 @@ public class WeatherService
         try
         {
             var url = $"https://geocoding-api.open-meteo.com/v1/search?name={Uri.EscapeDataString(query.Trim())}&count=15&language={LocalizationService.CurrentLanguage}&format=json";
-            var response = await HttpClient.GetFromJsonAsync<GeocodingResponse>(url, cancellationToken);
+            var response = await HttpClient.GetFromJsonAsync<GeocodingResponse>(url, cancellationToken).ConfigureAwait(false);
             return response?.Results ?? new List<GeoLocation>();
         }
         catch
@@ -80,7 +80,7 @@ public class WeatherService
         if (settings.WeatherProvider.Equals("mgm", StringComparison.OrdinalIgnoreCase) &&
             (string.Equals(settings.Country, "Turkey", StringComparison.OrdinalIgnoreCase) || string.Equals(settings.Country, "Türkiye", StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(settings.Country)))
         {
-            var mgmData = await GetMgmWeatherAsync(settings, cancellationToken);
+            var mgmData = await GetMgmWeatherAsync(settings, cancellationToken).ConfigureAwait(false);
             if (mgmData != null)
             {
                 LastWeatherData = mgmData;
@@ -89,7 +89,7 @@ public class WeatherService
         }
 
         // 2. Open-Meteo ve Seçili Model (ECMWF, GFS, DWD, Auto)
-        return await GetOpenMeteoWeatherAsync(settings, cancellationToken);
+        return await GetOpenMeteoWeatherAsync(settings, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public class WeatherService
             string searchCity = settings.City.Trim();
             // Türkçe karakter düzeltmesi ve ilçe eşleştirmesi için merkezler sorgusu
             string merkezlerUrl = $"https://servis.mgm.gov.tr/web/merkezler?il={Uri.EscapeDataString(searchCity)}";
-            var merkezlerJson = await HttpClient.GetStringAsync(merkezlerUrl, cancellationToken);
+            var merkezlerJson = await HttpClient.GetStringAsync(merkezlerUrl, cancellationToken).ConfigureAwait(false);
             using var docMerkezler = JsonDocument.Parse(merkezlerJson);
 
             if (docMerkezler.RootElement.ValueKind != JsonValueKind.Array || docMerkezler.RootElement.GetArrayLength() == 0)
@@ -141,7 +141,7 @@ public class WeatherService
             if (sondurumIstNo > 0)
             {
                 string sondurumUrl = $"https://servis.mgm.gov.tr/web/sondurumlar?istno={sondurumIstNo}";
-                var sondurumJson = await HttpClient.GetStringAsync(sondurumUrl, cancellationToken);
+                var sondurumJson = await HttpClient.GetStringAsync(sondurumUrl, cancellationToken).ConfigureAwait(false);
                 using var docSondurum = JsonDocument.Parse(sondurumJson);
 
                 if (docSondurum.RootElement.ValueKind == JsonValueKind.Array && docSondurum.RootElement.GetArrayLength() > 0)
@@ -188,7 +188,7 @@ public class WeatherService
             if (gunlukTahminIstNo > 0)
             {
                 string gunlukUrl = $"https://servis.mgm.gov.tr/web/tahminler/gunluk?istno={gunlukTahminIstNo}";
-                var gunlukJson = await HttpClient.GetStringAsync(gunlukUrl, cancellationToken);
+                var gunlukJson = await HttpClient.GetStringAsync(gunlukUrl, cancellationToken).ConfigureAwait(false);
                 using var docGunluk = JsonDocument.Parse(gunlukJson);
 
                 if (docGunluk.RootElement.ValueKind == JsonValueKind.Array && docGunluk.RootElement.GetArrayLength() > 0)
@@ -254,7 +254,7 @@ public class WeatherService
 
             var url = $"https://api.open-meteo.com/v1/forecast?latitude={latStr}&longitude={lngStr}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto{tempUnitParam}{windUnitParam}{modelParam}";
 
-            var response = await HttpClient.GetFromJsonAsync<WeatherApiResponse>(url, cancellationToken);
+            var response = await HttpClient.GetFromJsonAsync<WeatherApiResponse>(url, cancellationToken).ConfigureAwait(false);
             if (response?.Current == null)
                 return LastWeatherData;
 

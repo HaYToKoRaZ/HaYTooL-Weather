@@ -8,10 +8,11 @@ namespace HaYTooLWeather.Services;
 /// <summary>
 /// Sistem tepsisi (System Tray) için tam boy hava durumu ikonu, dev boyutta sıcaklık derecesi, bağımsız ölçekler ve özelleştirilebilir arka plan rengi/opaklığı üreten servis.
 /// </summary>
-public static class IconGenerator
+public static partial class IconGenerator
 {
-    [DllImport("user32.dll", CharSet = CharSet.Auto)]
-    public static extern bool DestroyIcon(IntPtr handle);
+    [LibraryImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool DestroyIcon(IntPtr handle);
 
     /// <summary>
     /// Sadece hava durumu simgesini tam boy, belirtilen ölçekte ve arka plan rengi/opaklığı ile çizer.
