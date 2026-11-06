@@ -1296,6 +1296,51 @@ public class SettingsForm : Form
             {
                 lblUpdateStatus.ForeColor = ColorEmerald;
                 lblUpdateStatus.Text = string.Format(LocalizationService.Get("about_latest_version"), result.CurrentVersion);
+
+                pnlAboutCard.Controls.RemoveByKey("btnAutoUpdateAction");
+                pnlAboutCard.Controls.RemoveByKey("btnBrowserUpdateAction");
+
+                if (!string.IsNullOrEmpty(result.DirectDownloadUrl))
+                {
+                    var btnForceUpdate = new Button
+                    {
+                        Name = "btnAutoUpdateAction",
+                        Text = LocalizationService.Get("about_force_reinstall_btn"),
+                        Location = new Point(20, 266),
+                        Size = new Size(260, 34),
+                        BackColor = ColorBgCardHover,
+                        ForeColor = ColorAccentCyan,
+                        FlatStyle = FlatStyle.Flat,
+                        Cursor = Cursors.Hand,
+                        Font = new Font("Segoe UI", 9f, FontStyle.Bold)
+                    };
+                    btnForceUpdate.FlatAppearance.BorderColor = ColorBorderCard;
+                    btnForceUpdate.Click += async (ds, de) =>
+                    {
+                        btnForceUpdate.Enabled = false;
+                        btnCheckUpdate.Enabled = false;
+                        lblUpdateStatus.ForeColor = ColorAccentCyan;
+                        lblUpdateStatus.Text = LocalizationService.Get("about_updating_downloading") + " %0";
+
+                        var progress = new Progress<int>(percent =>
+                        {
+                            lblUpdateStatus.Text = $"{LocalizationService.Get("about_updating_downloading")} %{percent}";
+                        });
+
+                        try
+                        {
+                            await UpdateService.DownloadAndInstallUpdateAsync(result.DirectDownloadUrl, progress);
+                        }
+                        catch (Exception ex)
+                        {
+                            lblUpdateStatus.ForeColor = Color.FromArgb(255, 120, 120);
+                            lblUpdateStatus.Text = "Hata: " + ex.Message;
+                            btnForceUpdate.Enabled = true;
+                            btnCheckUpdate.Enabled = true;
+                        }
+                    };
+                    pnlAboutCard.Controls.Add(btnForceUpdate);
+                }
             }
             else
             {
