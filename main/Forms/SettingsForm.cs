@@ -1213,20 +1213,84 @@ public class SettingsForm : Form
                 lblUpdateStatus.ForeColor = ColorGold;
                 lblUpdateStatus.Text = string.Format(LocalizationService.Get("about_update_available"), result.LatestVersion);
 
-                var btnDownload = new Button
+                pnlAboutCard.Controls.RemoveByKey("btnAutoUpdateAction");
+                pnlAboutCard.Controls.RemoveByKey("btnBrowserUpdateAction");
+
+                if (!string.IsNullOrEmpty(result.DirectDownloadUrl))
                 {
-                    Text = LocalizationService.Get("about_update_btn"),
-                    Location = new Point(20, 266),
-                    Size = new Size(200, 32),
-                    BackColor = ColorAccentBlue,
-                    ForeColor = Color.White,
-                    FlatStyle = FlatStyle.Flat,
-                    Cursor = Cursors.Hand,
-                    Font = new Font("Segoe UI", 9f, FontStyle.Bold)
-                };
-                btnDownload.FlatAppearance.BorderSize = 0;
-                btnDownload.Click += (ds, de) => OpenUrl(result.ReleaseUrl);
-                pnlAboutCard.Controls.Add(btnDownload);
+                    var btnAutoUpdate = new Button
+                    {
+                        Name = "btnAutoUpdateAction",
+                        Text = "⚡ " + LocalizationService.Get("about_update_now_btn"),
+                        Location = new Point(20, 266),
+                        Size = new Size(240, 34),
+                        BackColor = ColorAccentBlue,
+                        ForeColor = Color.White,
+                        FlatStyle = FlatStyle.Flat,
+                        Cursor = Cursors.Hand,
+                        Font = new Font("Segoe UI", 9f, FontStyle.Bold)
+                    };
+                    btnAutoUpdate.FlatAppearance.BorderSize = 0;
+                    btnAutoUpdate.Click += async (ds, de) =>
+                    {
+                        btnAutoUpdate.Enabled = false;
+                        btnCheckUpdate.Enabled = false;
+                        lblUpdateStatus.ForeColor = ColorAccentCyan;
+                        lblUpdateStatus.Text = LocalizationService.Get("about_updating_downloading") + " %0";
+
+                        var progress = new Progress<int>(percent =>
+                        {
+                            lblUpdateStatus.Text = $"{LocalizationService.Get("about_updating_downloading")} %{percent}";
+                        });
+
+                        try
+                        {
+                            await UpdateService.DownloadAndInstallUpdateAsync(result.DirectDownloadUrl, progress);
+                        }
+                        catch (Exception ex)
+                        {
+                            lblUpdateStatus.ForeColor = Color.FromArgb(255, 120, 120);
+                            lblUpdateStatus.Text = "Hata: " + ex.Message;
+                            btnAutoUpdate.Enabled = true;
+                            btnCheckUpdate.Enabled = true;
+                        }
+                    };
+                    pnlAboutCard.Controls.Add(btnAutoUpdate);
+
+                    var btnBrowser = new Button
+                    {
+                        Name = "btnBrowserUpdateAction",
+                        Text = "🌐 " + LocalizationService.Get("about_update_btn"),
+                        Location = new Point(270, 266),
+                        Size = new Size(180, 34),
+                        BackColor = ColorBgCardHover,
+                        ForeColor = ColorTextPrimary,
+                        FlatStyle = FlatStyle.Flat,
+                        Cursor = Cursors.Hand,
+                        Font = new Font("Segoe UI", 8.5f)
+                    };
+                    btnBrowser.FlatAppearance.BorderColor = ColorBorderCard;
+                    btnBrowser.Click += (ds, de) => OpenUrl(result.ReleaseUrl);
+                    pnlAboutCard.Controls.Add(btnBrowser);
+                }
+                else
+                {
+                    var btnDownload = new Button
+                    {
+                        Name = "btnBrowserUpdateAction",
+                        Text = "⬇️ " + LocalizationService.Get("about_update_btn"),
+                        Location = new Point(20, 266),
+                        Size = new Size(220, 34),
+                        BackColor = ColorAccentBlue,
+                        ForeColor = Color.White,
+                        FlatStyle = FlatStyle.Flat,
+                        Cursor = Cursors.Hand,
+                        Font = new Font("Segoe UI", 9f, FontStyle.Bold)
+                    };
+                    btnDownload.FlatAppearance.BorderSize = 0;
+                    btnDownload.Click += (ds, de) => OpenUrl(result.ReleaseUrl);
+                    pnlAboutCard.Controls.Add(btnDownload);
+                }
             }
             else if (string.IsNullOrEmpty(result.ErrorMessage))
             {

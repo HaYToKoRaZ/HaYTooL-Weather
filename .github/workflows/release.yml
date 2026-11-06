@@ -36,7 +36,7 @@ jobs:
       - name: Publish Single-File Release Executable
         shell: pwsh
         run: |
-          dotnet publish HaYTooLWeather.csproj -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -p:DebugType=none -p:DebugSymbols=false -p:Version=${{ steps.get_version.outputs.CLEAN_VERSION }} -o publish_out
+          dotnet publish main/HaYTooLWeather.csproj -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -p:DebugType=none -p:DebugSymbols=false -p:Version=${{ steps.get_version.outputs.CLEAN_VERSION }} -o publish_out
 
       - name: Create Portable Zip Package
         shell: pwsh
@@ -61,6 +61,8 @@ jobs:
             - **Platform:** Windows x64 (.NET 10)
             - **Kurulum:** Taşınabilir (Portable), kurulum gerektirmez. İndirip doğrudan çalıştırabilirsiniz.
             - **Gizlilik:** %100 yerel, telemetrisiz ve açık kaynaklı.
-          files: ${{ env.ZIP_NAME }}
+          files: |
+            ${{ env.ZIP_NAME }}
+            publish_out/HaYTooLWeather.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

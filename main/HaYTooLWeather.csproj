@@ -9,7 +9,7 @@
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <AssemblyName>HaYTooLWeather</AssemblyName>
     <RootNamespace>HaYTooLWeather</RootNamespace>
-    <Version>4.5</Version>
+    <Version>4.6</Version>
     <Authors>HaYTo</Authors>
     <Company>HaYTooL</Company>
     <Product>HaYTooL Weather</Product>
